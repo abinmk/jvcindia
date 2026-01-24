@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import ProductModal from "./ProductModal";
 
 const AUTO_SCROLL = 4500;
 
@@ -9,6 +10,7 @@ const ProductsMobileCarousel = () => {
   const [activeProduct, setActiveProduct] = useState(null);
   const timerRef = useRef(null);
 
+  /* ---------------- FETCH PRODUCTS ---------------- */
   useEffect(() => {
     fetch("/data/products.json")
       .then((res) => res.json())
@@ -16,15 +18,14 @@ const ProductsMobileCarousel = () => {
       .catch(console.error);
   }, []);
 
+  /* ---------------- AUTO SCROLL ---------------- */
   useEffect(() => {
     if (!products.length) return;
     timerRef.current = setInterval(next, AUTO_SCROLL);
     return () => clearInterval(timerRef.current);
   }, [products.length]);
 
-  const next = () =>
-    setIndex((i) => (i + 1) % products.length);
-
+  const next = () => setIndex((i) => (i + 1) % products.length);
   const prev = () =>
     setIndex((i) => (i === 0 ? products.length - 1 : i - 1));
 
@@ -34,7 +35,7 @@ const ProductsMobileCarousel = () => {
 
   return (
     <section className="bg-white py-20">
-      {/* Header */}
+      {/* ================= HEADER ================= */}
       <div className="px-6 text-center mb-12">
         <p className="text-[11px] tracking-[0.3em] text-gray-400 uppercase">
           JVC India
@@ -44,11 +45,13 @@ const ProductsMobileCarousel = () => {
         </h2>
       </div>
 
-      {/* Carousel */}
+      {/* ================= CAROUSEL ================= */}
       <div
         className="relative px-5"
         onTouchStart={() => clearInterval(timerRef.current)}
-        onTouchEnd={() => (timerRef.current = setInterval(next, AUTO_SCROLL))}
+        onTouchEnd={() =>
+          (timerRef.current = setInterval(next, AUTO_SCROLL))
+        }
       >
         <motion.div
           key={product.id}
@@ -99,7 +102,7 @@ const ProductsMobileCarousel = () => {
           </div>
         </motion.div>
 
-        {/* Controls */}
+        {/* CONTROLS */}
         <div className="flex justify-between items-center mt-6 px-2">
           <button
             onClick={prev}
@@ -133,7 +136,7 @@ const ProductsMobileCarousel = () => {
         </div>
       </div>
 
-      {/* View All */}
+      {/* ================= VIEW ALL ================= */}
       <div className="mt-16 flex justify-center">
         <a
           href="/products"
@@ -152,178 +155,12 @@ const ProductsMobileCarousel = () => {
         </a>
       </div>
 
-      {/* ================= POPUP ================= */}
-      <AnimatePresence>
-  {activeProduct && (
-    <motion.div
-      className="
-        fixed inset-0 z-[9999]
-        bg-white
-        flex flex-col
-      "
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-    >
-      {/* ================= STICKY HEADER ================= */}
-      <div
-        className="
-          sticky top-0 z-20
-          bg-white
-          border-b
-        "
-      >
-        {/* Close */}
-        <button
-  onClick={() => setActiveProduct(null)}
-  className="
-    absolute top-4 right-4
-    z-50
-    w-11 h-11
-    rounded-full
-
-    bg-jvcOrange/100
-    text-white
-    text-xl
-
-    flex items-center justify-center
-    backdrop-blur
-
-    hover:bg-jvcOrange/90
-    transition
-  "
->
-  ✕
-</button>
-
-        {/* Image */}
-        {/* <div className="h-[260px] bg-gray-100 flex items-center justify-center">
-          <img
-            src={activeProduct.image}
-            alt={activeProduct.name}
-            className="max-h-full max-w-full object-contain scale-[1.2]"
-          />
-        </div> */}
-
-        <div className="h-[300px] overflow-hidden">
-  <img
-    src={activeProduct.image}
-    alt={activeProduct.name}
-    className="
-      w-full h-full
-      object-cover
-      scale-[1]
-      transform
-    "
-  />
-</div>
-
-        {/* Title */}
-        <div className="px-6 py-4">
-          <h2 className="text-2xl font-semibold text-jvcNavy">
-            {activeProduct.name}
-          </h2>
-          <p className="text-sm text-gray-600">
-            {activeProduct.subtitle}
-          </p>
-        </div>
-      </div>
-
-      {/* ================= SCROLLABLE CONTENT ================= */}
-      <div className="flex-1 overflow-y-auto px-6 pb-10 space-y-6">
-
-        {/* Description */}
-        <p className="text-sm text-gray-700 leading-relaxed">
-          {activeProduct.description}
-        </p>
-
-        {/* Applications */}
-        {activeProduct.applications?.length > 0 && (
-          <div>
-            <p className="text-sm font-semibold text-jvcNavy mb-2">
-              Applications
-            </p>
-            <ul className="list-disc pl-5 text-sm text-gray-700 space-y-1">
-              {activeProduct.applications.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Grades */}
-        {activeProduct.grades?.length > 0 && (
-          <div>
-            <p className="text-sm font-semibold text-jvcNavy mb-2">
-              Available Grades
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {activeProduct.grades.map((grade, i) => (
-                <span
-                  key={i}
-                  className="
-                    px-3 py-1 text-xs
-                    border border-jvcOrange
-                    text-jvcOrange rounded-full
-                  "
-                >
-                  {grade}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Mesh Sizes */}
-        {activeProduct.meshSizes?.length > 0 && (
-          <div>
-            <p className="text-sm font-semibold text-jvcNavy mb-2">
-              Mesh / Particle Size
-            </p>
-            <ul className="text-sm text-gray-700 space-y-1">
-              {activeProduct.meshSizes.map((mesh, i) => (
-                <li key={i}>• {mesh}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* Packaging */}
-        {activeProduct.packaging?.length > 0 && (
-          <div>
-            <p className="text-sm font-semibold text-jvcNavy mb-2">
-              Packaging & Supply
-            </p>
-            <ul className="text-sm text-gray-700 space-y-1">
-              {activeProduct.packaging.map((pack, i) => (
-                <li key={i}>• {pack}</li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        {/* CTA */}
-        <div className="pt-6">
-          <a
-            href="#contact"
-            onClick={() => setActiveProduct(null)}
-            className="
-              block w-full text-center
-              py-4
-              bg-jvcOrange text-white
-              font-semibold
-              rounded-lg
-              hover:bg-orange-600
-              transition
-            "
-          >
-            Request Quotation
-          </a>
-        </div>
-      </div>
-    </motion.div>
-  )}
-</AnimatePresence>
+      {/* ================= PRODUCT MODAL (REUSED) ================= */}
+      <ProductModal
+        product={activeProduct}
+        isOpen={!!activeProduct}
+        onClose={() => setActiveProduct(null)}
+      />
     </section>
   );
 };

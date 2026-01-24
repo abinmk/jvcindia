@@ -7,12 +7,85 @@ import {
   FiGlobe,
   FiMapPin,
 } from "react-icons/fi";
+import COUNTRIES from "../data/countries";
+
+/* ---------------- CONTACT VALIDATION ---------------- */
+const isValidContact = (number) => {
+  const digits = number.replace(/\D/g, "");
+
+  if (digits.length < 7) return false;
+  if (/^(\d)\1+$/.test(digits)) return false; // 000000, 111111
+  if (/^1234|^0123/.test(digits)) return false;
+
+  return true;
+};
+
+/* ---------------- EMAIL ANTI-SPAM ---------------- */
+const DISPOSABLE_EMAIL_DOMAINS = [
+  "mailinator.com",
+  "tempmail.com",
+  "10minutemail.com",
+  "guerrillamail.com",
+  "yopmail.com",
+  "throwawaymail.com",
+  "getnada.com",
+  "fakeinbox.com",
+  "trashmail.com",
+  "dispostable.com",
+  "maildrop.cc",
+  "mintemail.com",
+  "sharklasers.com",
+];
+
+const BLOCKED_EMAIL_PREFIXES = [
+  "test",
+  "testing",
+  "support",
+  "contact",
+  "noreply",
+  "no-reply",
+  "example",
+];
+
+const isValidBusinessEmail = (email) => {
+  if (!email) return false;
+
+  const value = email.trim().toLowerCase();
+
+  // Length sanity
+  if (value.length < 6 || value.length > 254) return false;
+
+  // Strong syntax
+  const regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+  if (!regex.test(value)) return false;
+
+  const [local, domain] = value.split("@");
+
+  // Block disposable domains
+  if (DISPOSABLE_EMAIL_DOMAINS.includes(domain)) return false;
+
+  // Block spam prefixes
+  if (BLOCKED_EMAIL_PREFIXES.includes(local)) return false;
+
+  // Block repeated or numeric-only names
+  if (/^(.)\1+$/.test(local)) return false;
+  if (/^\d+$/.test(local)) return false;
+
+  return true;
+};
 
 const ContactForm = () => {
   const [meta, setMeta] = useState(null);
+
   const [formData, setFormData] = useState({
     name: "",
+    company: "",
+    country: "",
+    countryCode: "",
+    contact: "",
     email: "",
+    product: "",
+    quantity: "",
     message: "",
   });
 
@@ -28,9 +101,53 @@ const ContactForm = () => {
   const handleChange = (e) =>
     setFormData({ ...formData, [e.target.name]: e.target.value });
 
+  const handleCountryChange = (e) => {
+    const selected = COUNTRIES.find(
+      (c) => c.name === e.target.value
+    );
+
+    setFormData({
+      ...formData,
+      country: selected.name,
+      countryCode: selected.dial,
+      contact: "",
+    });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+
+    if (
+      !formData.name ||
+      !formData.country ||
+      !formData.contact ||
+      !formData.email ||
+      !formData.product ||
+      !formData.quantity ||
+      !formData.message
+    ) {
+      alert("Please fill all required fields.");
+      return;
+    }
+
+    if (!isValidContact(formData.contact)) {
+      alert("Please enter a valid contact number.");
+      return;
+    }
+
+    if (!isValidBusinessEmail(formData.email)) {
+      alert(
+        "Please enter a valid business email address.\nDisposable or fake emails are not accepted."
+      );
+      return;
+    }
+
+    const payload = {
+      ...formData,
+      fullContact: `${formData.countryCode}${formData.contact}`,
+    };
+
+    console.log(payload);
   };
 
   return (
@@ -62,136 +179,160 @@ const ContactForm = () => {
               </p>
 
               <div className="space-y-5">
-                {/* <InfoRow icon={FiMail} label="Email" value={meta.info.email} /> */}
+                <InfoRow icon={FiMail} label="Email" values={[meta.info.email1, meta.info.email2]} />
+                <InfoRow icon={FiPhone} label="Phone" values={[meta.info.phone1, meta.info.phone2, meta.info.phone3]} />
+                <InfoRow icon={FiMapPin} label="Address" value={meta.info.address} />
+                <InfoRow icon={FiClock} label="Response Time" value={meta.info.responseTime} />
+                <InfoRow icon={FiGlobe} label="Markets" value={meta.info.markets} />
+              </div>
 
-                <InfoRow
-                  icon={FiMail}
-                  label="Phone"
-                  values={[
-                    meta.info.email1,
-                    meta.info.email2,
-                  ].filter(Boolean)}
-                />
+            {/* LOCATION */}
+            <div className="mt-4">
+              <p className="text-1xl font-semibold text-jvcNavy mb-2.5 text-center">
+                JVC India Location
+              </p>
 
-                <InfoRow
-                  icon={FiPhone}
-                  label="Phone"
-                  values={[
-                    meta.info.phone1,
-                    meta.info.phone2,
-                    meta.info.phone3,
-                  ].filter(Boolean)}
-                />
-
-                <InfoRow
-                  icon={FiMapPin}
-                  label="Address"
-                  value={meta.info.address}
-                />
-
-                <InfoRow
-                  icon={FiClock}
-                  label="Response Time"
-                  value={meta.info.responseTime}
-                />
-
-                <InfoRow
-                  icon={FiGlobe}
-                  label="Markets"
-                  value={meta.info.markets}
+              <div className="h-48 md:h-56 rounded-lg overflow-hidden border border-gray-200">
+                <iframe
+                  title="JVC India Location"
+                  src="https://www.google.com/maps?q=10.089882573143587,76.35786212017823&output=embed"
+                  className="w-full h-full"
+                  loading="lazy"
                 />
               </div>
 
-              <p className="mt-8 text-xs text-gray-500">
+              {/* GET DIRECTIONS */}
+              <div className="mt-3 text-center">
+                <a
+                  href="https://maps.app.goo.gl/gyK9yohd6Gc69um76"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="
+                    inline-flex items-center gap-2
+                    px-4 py-2
+                    text-sm font-medium
+                    text-white
+                    bg-jvcOrange
+                    rounded-md
+                    hover:bg-orange-500
+                    transition
+                  "
+                >
+                  <FiMapPin size={16} />
+                  Get Directions
+                </a>
+              </div>
+            </div>
+
+              <p className="mt-8 text-xs text-gray-500 text-center">
                 {meta.trustLine}
               </p>
             </div>
 
-            {/* RIGHT – MAP + FORM */}
-            {/* RIGHT – MAP + FORM */}
-<div className="flex flex-col">
+            {/* RIGHT */}
+            <div className="flex flex-col">
 
-{/* MAP */}
-<div className="h-48 md:h-56 border-b">
-  <iframe
-    title="JVC India Location"
-    src="https://www.google.com/maps?q=10.089882573143587, 76.35786212017823&output=embed"
-    className="w-full h-full"
-    loading="lazy"
-  />
-</div>
+              {/* FORM */}
+              <div className="p-6 md:p-8">
+                <CForm className="space-y-4" onSubmit={handleSubmit}>
 
-{/* MAP CTA */}
-<div className="px-6 py-2 border-b bg-gray-50">
-  <a
-    href="https://maps.app.goo.gl/gyK9yohd6Gc69um76"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="
-      inline-flex items-center gap-2
-      text-sm font-medium
-      text-jvcOrange
-      hover:text-orange-500
-    "
-  >
-    <FiMapPin size={16} />
-    Get Directions
-  </a>
-</div>
+                  <FormField label="Name *" name="name" value={formData.name} onChange={handleChange} />
+                  <FormField label="Company" name="company" value={formData.company} onChange={handleChange} />
 
-{/* FORM */}
-<div className="p-6 md:p-8">
-  <CForm className="space-y-4" onSubmit={handleSubmit}>
+                  {/* COUNTRY */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Country *
+                    </label>
+                    <select
+                      value={formData.country}
+                      onChange={handleCountryChange}
+                      className="jvc-input w-full"
+                      required
+                    >
+                      <option value="">Select Country</option>
+                      {COUNTRIES.map((c) => (
+                        <option key={c.code} value={c.name}>
+                          {c.name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
 
-    <FormField
-      label={meta.form.nameLabel}
-      name="name"
-      placeholder="John Doe"
-      value={formData.name}
-      onChange={handleChange}
-    />
+                  {/* CONTACT */}
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Contact *
+                    </label>
+                    <div className="flex">
+                      <div className="px-3 flex items-center bg-gray-100 border border-r-0 border-gray-300 rounded-l-md text-sm">
+                        {formData.countryCode || "+__"}
+                      </div>
+                      <input
+                        type="tel"
+                        value={formData.contact}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            contact: e.target.value.replace(/\D/g, ""),
+                          })
+                        }
+                        className="jvc-input w-full rounded-l-none"
+                        placeholder="Enter number"
+                        required
+                      />
+                    </div>
+                  </div>
 
-    <FormField
-      label={meta.form.emailLabel}
-      name="email"
-      placeholder="john@company.com"
-      value={formData.email}
-      onChange={handleChange}
-    />
+                  <FormField
+                    label="Email *"
+                    type="email"
+                    name="email"
+                    placeholder="name@company.com"
+                    value={formData.email}
+                    onChange={handleChange}
+                  />
 
-    <div>
-      <label className="block text-sm font-medium text-gray-700 mb-1">
-        {meta.form.messageLabel}
-      </label>
-      <CFormTextarea
-        rows={2}
-        name="message"
-        placeholder={meta.form.messagePlaceholder}
-        value={formData.message}
-        onChange={handleChange}
-        className="jvc-input w-full resize-none"
-      />
-    </div>
+                  <FormField
+                    label="Product Enquiry *"
+                    name="product"
+                    placeholder="e.g. Bentonite, Quartz, Garnet"
+                    value={formData.product}
+                    onChange={handleChange}
+                  />
 
-    <button
-      type="submit"
-      className="
-        w-full py-2.5
-        bg-orange-600 text-white
-        font-semibold
-        rounded-md
-        hover:bg-orange-500
-        active:bg-orange-700
-        transition
-      "
-    >
-      {meta.form.cta}
-    </button>
+                  <FormField
+                    label="Required Quantity *"
+                    name="quantity"
+                    placeholder="e.g. 25 MT / 500 kg"
+                    value={formData.quantity}
+                    onChange={handleChange}
+                  />
 
-  </CForm>
-</div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Message *
+                    </label>
+                    <CFormTextarea
+                      rows={3}
+                      name="message"
+                      value={formData.message}
+                      onChange={handleChange}
+                      className="jvc-input w-full resize-none"
+                    />
+                  </div>
 
-</div>
+                  <button
+                    type="submit"
+                    className="w-full py-2.5 bg-orange-600 text-white font-semibold rounded-md hover:bg-orange-500 transition"
+                  >
+                    {meta.form.cta}
+                  </button>
+
+                </CForm>
+              </div>
+
+            </div>
           </div>
         </div>
       </div>
@@ -199,24 +340,20 @@ const ContactForm = () => {
   );
 };
 
-/* INFO ROW */
+/* ---------------- HELPERS ---------------- */
 const InfoRow = ({ icon: Icon, label, value, values }) => (
   <div className="flex items-start gap-3">
     <Icon className="text-jvcOrange mt-1" size={18} />
     <div>
       <p className="text-sm font-semibold text-jvcNavy">{label}</p>
       {value && <p className="text-sm text-gray-600">{value}</p>}
-      {values &&
-        values.map((v, i) => (
-          <p key={i} className="text-sm text-gray-600">
-            {v}
-          </p>
-        ))}
+      {values && values.map((v, i) => (
+        <p key={i} className="text-sm text-gray-600">{v}</p>
+      ))}
     </div>
   </div>
 );
 
-/* FORM FIELD */
 const FormField = ({ label, ...props }) => (
   <div>
     <label className="block text-sm font-medium text-gray-700 mb-1">
