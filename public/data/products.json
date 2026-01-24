@@ -1,0 +1,185 @@
+[
+  {
+    "id": "BaryteDemo",
+    "name": "BaryteDemo",
+    "subtitle": "Oil Drilling & Industrial Applications",
+    "description": "Baryte is a naturally occurring mineral composed of barium sulfate (BaSO₄), known for its high specific gravity, chemical inertness, and whiteness. It is widely used as a weighting agent in oil & gas drilling fluids and in paints, plastics, rubber, and filler applications.",
+    "applications": [
+      "Oil & Gas Drilling Fluids",
+      "Paints & Coatings",
+      "Plastics & Rubber",
+      "Industrial Fillers",
+      "Industrial Fillers22",
+      "Industrial Fillers333"
+    ],
+    "grades": [
+      "Drilling Grade – High density, low silica",
+      "Industrial Grade – Paints, plastics, rubber"
+    ],
+    "meshSizes": [
+      "Custom mesh sizes available on request"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers"
+    ],
+    "image": "/images/products/baryte.webp"
+  },
+
+  {
+    "id": "calcium-carbonate",
+    "name": "Calcium Carbonate",
+    "subtitle": "Industrial & Construction Grade",
+    "description": "Calcium Carbonate is a versatile industrial mineral widely used in construction, plastics, paper, paints, and rubber industries. It offers high purity, excellent whiteness, and controlled particle size for consistent industrial performance.",
+    "applications": [
+      "Construction Materials",
+      "Plastics & Polymers",
+      "Paper Industry",
+      "Paints & Rubber"
+    ],
+    "grades": [],
+    "meshSizes": [
+      "Granules",
+      "Powder",
+      "Custom mesh on request"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers"
+    ],
+    "image": "/images/products/calcium-carbonate.webp"
+  },
+
+  {
+    "id": "phospho-gypsum",
+    "name": "Phospho Gypsum",
+    "subtitle": "Cement & Agriculture Applications",
+    "description": "Phospho Gypsum is a by-product of phosphoric acid manufacturing, primarily composed of calcium sulfate dihydrate (CaSO₄·2H₂O). It is widely used in cement production, agriculture, and construction materials.",
+    "applications": [
+      "Cement Industry",
+      "Soil Conditioning",
+      "Road Construction",
+      "Agriculture"
+    ],
+    "grades": [
+      "Cement Grade",
+      "Agricultural Grade",
+      "Moisture-Controlled Supply"
+    ],
+    "meshSizes": [
+      "Standard sizes available on request"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers",
+      "Custom Bulk Packaging"
+    ],
+    "image": "/images/products/phospho-gypsum.webp"
+  },
+
+  {
+    "id": "quartz-silica-sand",
+    "name": "Quartz Silica Sand",
+    "subtitle": "Glass, Foundry & High-Tech Industries",
+    "description": "Quartz Silica Sand is a high-purity silica derived from naturally occurring quartz stone. It is a key raw material for glass, foundry, construction, and high-tech industries such as semiconductors and photovoltaics.",
+    "applications": [
+      "Glass Manufacturing",
+      "Foundry Casting",
+      "Construction",
+      "Water Filtration",
+      "Semiconductors & Solar"
+    ],
+    "grades": [
+      "Grade A – SiO₂ > 99.5%",
+      "Grade B – SiO₂ > 98.0%",
+      "Grade C – SiO₂ > 95.0%"
+    ],
+    "meshSizes": [
+      "12–24 Mesh",
+      "16–30 Mesh",
+      "30–80 Mesh",
+      "80–100 Mesh",
+      "100–200 Mesh"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers"
+    ],
+    "image": "/images/products/quartz.webp"
+  },
+
+  {
+    "id": "silica-fume",
+    "name": "Silica Fume (Microsilica)",
+    "subtitle": "High-Performance Concrete Additive",
+    "description": "Silica Fume is an ultra-fine pozzolanic material obtained as a by-product of silicon alloy production. With particle size less than 1 micron, it significantly enhances concrete strength, durability, and chemical resistance.",
+    "applications": [
+      "High-Strength Concrete",
+      "Cement Admixtures",
+      "Industrial Flooring",
+      "Infrastructure Projects"
+    ],
+    "grades": [
+      "High Reactivity Grade"
+    ],
+    "meshSizes": [
+      "Ultra-fine (<1 micron)"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers"
+    ],
+    "image": "/images/products/silica-fume.webp"
+  },
+
+  {
+    "id": "fly-ash",
+    "name": "Fly Ash",
+    "subtitle": "Pozzolanic Cement Material",
+    "description": "Fly Ash is a fine powdery by-product from coal combustion in thermal power plants. Rich in silica and alumina, it improves concrete strength, workability, and durability while reducing environmental impact.",
+    "applications": [
+      "Ready-Mix Concrete",
+      "Precast Concrete",
+      "Infrastructure Projects"
+    ],
+    "grades": [
+      "Class F",
+      "Class C"
+    ],
+    "meshSizes": [
+      "100 Mesh"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers"
+    ],
+    "image": "/images/products/fly-ash.webp"
+  },
+
+  {
+    "id": "bentonite",
+    "name": "Bentonite",
+    "subtitle": "Drilling & Industrial Clay",
+    "description": "Bentonite is a natural clay rich in montmorillonite, known for its excellent swelling, binding, and absorbent properties. It is widely used in drilling, foundry casting, construction, and waterproofing applications.",
+  
+    "grades": [
+      "Sodium Bentonite – High swelling grade",
+      "Calcium Bentonite – Absorbent grade"
+    ],
+    "meshSizes": [
+      "Custom mesh sizes available on request"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers"
+    ],
+    "image": "/images/products/bentonite.webp"
+  }
+]
