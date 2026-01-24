@@ -72,6 +72,42 @@ const AboutSection = () => {
           ))}
         </div>
 
+        {/* Services */}
+        {about.services && (
+          <div className="max-w-6xl mx-auto mt-24 text-center">
+            <h3 className="text-4xl font-semibold text-white tracking-tight mb-16">
+              Services
+            </h3>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+              {about.services.map((service, index) => (
+                <div
+                  key={index}
+                  className="flex flex-col items-center text-center"
+                >
+                  {/* Icon Box */}
+                  <div className="w-32 h-32 bg-jvcOrange flex items-center justify-center mb-6">
+                    <img
+                      src={service.icon}
+                      alt={service.title}
+                      className="w-32 h-32"
+                    />
+                  </div>
+
+                  <h4 className="text-xl font-semibold text-white mb-3">
+                    {service.title}
+                  </h4>
+
+                  <p className="text-gray-200 leading-relaxed">
+                    {service.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+
         {/* Credibility Line */}
         {about.credibilityLine && (
           <div className="max-w-4xl mx-auto mt-16 text-center">

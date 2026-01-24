@@ -115,7 +115,7 @@ const ContactForm = () => {
 <div className="h-48 md:h-56 border-b">
   <iframe
     title="JVC India Location"
-    src="https://www.google.com/maps?q=By%20Pass%20Junction%20Bus%20Stop,%20SH%2016,%20Bridge%20Road,%20Periyar%20Nagar,%20Aluva,%20Kerala%20683101,%20India&output=embed"
+    src="https://www.google.com/maps?q=10.089882573143587, 76.35786212017823&output=embed"
     className="w-full h-full"
     loading="lazy"
   />
@@ -124,7 +124,7 @@ const ContactForm = () => {
 {/* MAP CTA */}
 <div className="px-6 py-2 border-b bg-gray-50">
   <a
-    href="https://maps.app.goo.gl/N5ayduf2SXSm9DN56"
+    href="https://maps.app.goo.gl/gyK9yohd6Gc69um76"
     target="_blank"
     rel="noopener noreferrer"
     className="

@@ -54,7 +54,7 @@ const Header = () => {
               alt="JVC India"
               className="h-12 w-auto"
             />
-              <div className="text-sm text-gray-500">
+              <div className="text-sm md:text-base + tracking-wide + font-medium ml-3">
                 {meta.subtitle}
               </div>
             </div>
