@@ -1,24 +1,63 @@
-import React, { useEffect, useState, useRef, useMemo } from "react";
-import {
-  FiLayers,
-  FiGrid,
-  FiPackage,
-  FiCheckCircle,
-  FiX,
-  FiSearch,
-  FiInfo
-} from "react-icons/fi";
+import React, { useState, useEffect, useRef } from "react";
+import { FiSearch, FiX } from "react-icons/fi";
+import { Link, useNavigate, useParams, useLocation } from "react-router-dom";
+import ProductModal from "./ProductModal";
+import ProductEnquiryModal from "./ProductEnquiryModal";
+
+/* ================= CONSTANTS ================= */
+
+const DEFAULT_TITLE = "JVC India | Industrial Minerals Exporter";
+const DEFAULT_DESCRIPTION =
+  "Industrial minerals exporter from India supplying baryte, bentonite, dolomite, silica, quartz and processed mineral products globally.";
+
+const DEFAULT_OG_IMAGE =
+  "https://www.jvcindia.com/images/og-default.jpg";
+
+
+/*================== Slug Helper =============== */
+const toSlug = (str) =>
+  str
+    ?.toLowerCase()
+    .replace(/&/g, "and")
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/(^-|-$)+/g, "");
+
+/* ================= COMPONENT ================= */
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
+
   const [activeProduct, setActiveProduct] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [isEnquiryOpen, setIsEnquiryOpen] = useState(false);
+  const [enquiryProductName, setEnquiryProductName] = useState("");
+
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
   const [isSticky, setIsSticky] = useState(false);
-  const contentRef = useRef(null);
+
   const stickyRef = useRef(null);
+  const navigate = useNavigate();
+  const { slug: routeSlug } = useParams();
+  const categoryFromSlug = products.find(
+    (p) => toSlug(p.type) === routeSlug
+  )?.type;
+  const isCategoryPage = Boolean(routeSlug && categoryFromSlug);
+  const location = useLocation();
+
+  /* ================= QUERY PARAM ================= */
+
+  const queryParams = new URLSearchParams(location.search);
+  const selectedType = queryParams.get("type");
+
+  const isFiltered =
+  Boolean(searchQuery.trim()) ||
+  Boolean(selectedType) ||
+  Boolean(categoryFromSlug);
+
+
+  /* ================= FETCH PRODUCTS ================= */
 
   useEffect(() => {
     fetch("/data/products.json")
@@ -30,701 +69,642 @@ const ProductsPage = () => {
       .catch(console.error);
   }, []);
 
-  // Extract unique categories
-  const categories = useMemo(() => {
-    const cats = ["all", ...new Set(products.map(p => p.category).filter(Boolean))];
-    return cats;
-  }, [products]);
+  /* ================= FILTER LOGIC ================= */
 
-  // Filter products based on search and category
   useEffect(() => {
-    let filtered = products;
-    
-    // Apply category filter
-    if (selectedCategory !== "all") {
-      filtered = filtered.filter(product => 
-        product.category === selectedCategory
-      );
+    let base = [...products];
+
+    const activeType = categoryFromSlug || selectedType;
+
+    if (activeType) {
+      base = base.filter((p) => p.type === activeType);
     }
-    
-    // Apply search filter
+
+
     if (searchQuery.trim()) {
-      const query = searchQuery.toLowerCase();
-      filtered = filtered.filter(product => 
-        product.name.toLowerCase().includes(query) ||
-        product.subtitle.toLowerCase().includes(query) ||
-        product.description.toLowerCase().includes(query) ||
-        (product.applications && product.applications.some(app => 
-          app.toLowerCase().includes(query)
-        )) ||
-        (product.grades && product.grades.some(grade => 
-          grade.toLowerCase().includes(query)
-        ))
+      const q = searchQuery.toLowerCase();
+      base = base.filter((p) =>
+        p.name.toLowerCase().includes(q)
       );
     }
-    
-    setFilteredProducts(filtered);
-  }, [searchQuery, selectedCategory, products]);
 
-  // Sticky search bar effect - starts after header
+    setFilteredProducts(base);
+  }, [products, searchQuery, selectedType, categoryFromSlug]);
+
+  /* ================= STICKY SEARCH ================= */
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (stickyRef.current) {
-        // Header is fixed at top, so start sticking after 100px scroll
-        const shouldBeSticky = window.scrollY > 100;
-        
-        if (shouldBeSticky !== isSticky) {
-          setIsSticky(shouldBeSticky);
-        }
-      }
-    };
+    const onScroll = () => setIsSticky(window.scrollY > 100);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isSticky]);
+  /* ================= MODAL FROM URL ================= */
 
-  const openModal = (product) => {
-    setActiveProduct(product);
+  useEffect(() => {
+    if (!products.length) return;
+
+    /* ===== CATEGORY PAGE HANDLING (STEP 3.5) ===== */
+    if (routeSlug && categoryFromSlug) {
+      const title = `${categoryFromSlug} Exporter from India | JVC India`;
+      const desc = `JVC India is a trusted exporter of ${categoryFromSlug.toLowerCase()} supplying global industries with consistent quality and bulk packaging.`;
+
+      setIsModalOpen(false);
+      setActiveProduct(null);
+      document.body.style.overflow = "auto";
+
+      document.title = title;
+      updateMetaDescription(desc);
+      updateCanonical(`${window.location.origin}/products/${routeSlug}`);
+
+      updateOGTag("og:type", "website");
+      updateOGTag("og:title", title);
+      updateOGTag("og:description", desc);
+      updateOGTag("og:url", `${window.location.origin}/products/${routeSlug}`);
+      updateOGTag("og:image", DEFAULT_OG_IMAGE);
+
+      removeProductSchema();
+      removeProductListSchema();
+      const categoryProducts = products.filter(
+        (p) => p.type === categoryFromSlug
+      );
+
+      injectProductListSchema(categoryProducts);
+
+      injectCategorySchema(categoryFromSlug, categoryProducts);
+
+      injectBreadcrumbSchema({
+        name: categoryFromSlug,
+        slug: routeSlug,
+      });
+
+      return;
+    }
+
+    /* ===== ALL PRODUCTS PAGE ===== */
+    if (!routeSlug) {
+      setIsModalOpen(false);
+      setActiveProduct(null);
+      document.body.style.overflow = "auto";
+
+      document.title = DEFAULT_TITLE;
+      updateMetaDescription(DEFAULT_DESCRIPTION);
+      updateCanonical(`${window.location.origin}/products`);
+
+      updateOGTag("og:type", "website");
+      updateOGTag("og:title", DEFAULT_TITLE);
+      updateOGTag("og:description", DEFAULT_DESCRIPTION);
+      updateOGTag("og:url", `${window.location.origin}/products`);
+      updateOGTag("og:image", DEFAULT_OG_IMAGE);
+
+      removeProductSchema();
+      removeProductListSchema();
+
+      const c = document.getElementById("category-schema");
+      if (c) c.remove();
+
+      injectProductListSchema(products);
+      injectBreadcrumbSchema(null);
+      return;
+    }
+
+    /* ===== PRODUCT PAGE ===== */
+    const found = products.find((p) => p.slug === routeSlug);
+    if (!found) {
+      navigate("/products", { replace: true });
+      return;
+    }
+
+    const s = document.getElementById("category-schema");
+      if (s) s.remove();
+
+    removeProductListSchema();
+    setActiveProduct(found);
     setIsModalOpen(true);
-    document.body.style.overflow = 'hidden';
-  };
+    document.body.style.overflow = "hidden";
+  }, [routeSlug, products, navigate]);
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    document.body.style.overflow = 'auto';
-    setTimeout(() => setActiveProduct(null), 300);
-  };
+  /* ================= PRODUCT SEO ================= */
 
   useEffect(() => {
-    const handleEscape = (e) => {
-      if (e.key === 'Escape' && isModalOpen) {
-        closeModal();
-      }
-    };
-    window.addEventListener('keydown', handleEscape);
-    return () => window.removeEventListener('keydown', handleEscape);
-  }, [isModalOpen]);
+    if (!activeProduct) return;
 
-  const handleClearSearch = () => {
+    const url = `${window.location.origin}/products/${activeProduct.slug}`;
+
+    document.title = `${activeProduct.name} | JVC India`;
+    updateMetaDescription(
+      activeProduct.description?.slice(0, 155) || DEFAULT_DESCRIPTION
+    );
+    updateCanonical(url);
+
+    updateOGTag("og:type", "product");
+    updateOGTag("og:title", `${activeProduct.name} | JVC India`);
+    updateOGTag(
+      "og:description",
+      activeProduct.description?.slice(0, 200)
+    );
+    updateOGTag("og:url", url);
+    updateOGTag(
+      "og:image",
+      activeProduct.images?.[0] ||
+        activeProduct.image ||
+        DEFAULT_OG_IMAGE
+    );
+
+    injectProductSchema(activeProduct);
+    injectBreadcrumbSchema(activeProduct);
+  }, [activeProduct]);
+
+  /* ================= HELPERS ================= */
+
+  const clearSearch = () => setSearchQuery("");
+
+  const clearAllFilters = () => {
     setSearchQuery("");
-    setSelectedCategory("all");
+    navigate("/products");
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const selectCategory = (type) => {
+    navigate(`/products/${toSlug(type)}`);
+  };
+
+  /* ================= SPLIT PRODUCTS ================= */
+
+  const fullProducts = filteredProducts.filter(
+    (p) => p.image && p.description && p.applications?.length
+  );
+
+  const liteProducts = filteredProducts.filter(
+    (p) => !p.image || !p.description || !p.applications?.length
+  );
+
+  const categories = [
+    ...new Set(products.map((p) => p.type).filter(Boolean)),
+  ];
+
+  /* ================= RENDER ================= */
 
   return (
-    <section className="bg-gray-50 pt-32 relative">
-      {/* ================= HEADER ================= */}
-      <div className="max-w-7xl mx-auto px-6 mb-12 text-center">
-        <p className="text-sm uppercase tracking-wide text-gray-500">
-          JVC India
-        </p>
-        <h1 className="text-4xl md:text-5xl font-semibold text-jvcNavy mt-2">
+    <section className="bg-gray-50 pb-28 pt-32 relative">
+      {/* HEADER */}
+      <div className="max-w-7xl mx-auto px-6 text-center">
+        <h1 className="text-4xl md:text-5xl font-semibold text-jvcNavy">
           Our Products
         </h1>
-        <p className="mt-4 max-w-2xl mx-auto text-gray-600 text-lg">
-          Export-grade industrial minerals supplied with reliability,
-          quality assurance, and global logistics.
+
+        <p className="mt-4 text-sm text-gray-600">
+          Showing{" "}
+          <span className="font-semibold">
+            {filteredProducts.length}
+          </span>{" "}
+          of{" "}
+          <span className="font-semibold">
+            {products.length}
+          </span>{" "}
+          products
         </p>
+
+        {/* CATEGORY CHIPS */}
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <button
+            onClick={clearAllFilters}
+            className={`px-4 py-2 rounded-full text-sm font-medium border ${
+              !selectedType && !categoryFromSlug
+                ? "bg-jvcOrange text-white"
+                : "bg-white text-gray-600"
+            }`}
+          >
+            All
+          </button>
+
+          {categories.map((type) => (
+            <button
+              key={type}
+              onClick={() => selectCategory(type)}
+              className={`px-4 py-2 rounded-full text-sm font-medium border ${
+                (categoryFromSlug || selectedType) === type
+                  ? "bg-jvcOrange text-white"
+                  : "bg-white text-gray-600"
+              }`}
+            >
+              {type}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* ================= STICKY SEARCH BAR (starts below header) ================= */}
-      <div 
+      {/* SEARCH */}
+      <div
         ref={stickyRef}
-        className={`
-          w-full z-40 transition-all duration-300
-          ${isSticky ? 'fixed top-20 md:top-24 shadow-lg' : 'relative'}
-          bg-white
-        `}
-        style={{
-          // When sticky, position it below the fixed header
-          ...(isSticky && {
-            top: '80px', // Mobile header height
-            '@media (min-width: 768px)': {
-              top: '96px' // Desktop header height
-            }
-          })
-        }}
+        className={`w-full z-40 ${
+          isSticky ? "fixed top-20 shadow-lg" : "relative"
+        } bg-white mt-0`}
       >
-        <div className="border-b border-gray-200">
-          <div className="max-w-7xl mx-auto px-6 py-4">
-            {/* Main search container */}
-            <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
-              <div className="flex flex-col lg:flex-row gap-4">
-                {/* Search Input */}
-                <div className="flex-1">
-                  <div className="relative">
-                    <FiSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="text"
-                      placeholder="Search products by name, application, grade, or description..."
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      className="
-                        w-full pl-12 pr-10 py-3
-                        bg-gray-50 border border-gray-300
-                        rounded-lg focus:ring-2 focus:ring-jvcOrange/50
-                        focus:border-jvcOrange outline-none
-                        transition-all duration-200
-                        placeholder:text-gray-400 text-base
-                      "
-                    />
-                    {searchQuery && (
-                      <button
-                        onClick={() => setSearchQuery("")}
-                        className="absolute right-3 top-1/2 transform -translate-y-1/2
-                                 text-gray-400 hover:text-gray-600 transition-colors"
-                      >
-                        <FiX className="w-5 h-5" />
-                      </button>
-                    )}
-                  </div>
-                </div>
-
-                {/* Clear Filters Button - Only show when filters are active */}
-                {(searchQuery || selectedCategory !== "all") && (
-                  <button
-                    onClick={handleClearSearch}
-                    className="
-                      px-4 py-3
-                      bg-gray-100 border border-gray-300
-                      text-gray-700 font-medium
-                      rounded-lg hover:bg-gray-200
-                      transition-colors duration-200
-                      whitespace-nowrap
-                      flex items-center gap-2
-                    "
-                  >
-                    <FiX className="w-4 h-4" />
-                    Clear Filters
-                  </button>
-                )}
-              </div>
-
-              {/* Results Count and Status */}
-              <div className="mt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <div className="text-sm text-gray-600">
-                  Showing <span className="font-semibold text-jvcNavy">{filteredProducts.length}</span> of{" "}
-                  <span className="font-semibold text-jvcNavy">{products.length}</span> products
-                  {searchQuery && (
-                    <span className="ml-2 text-jvcOrange">
-                      • Searching for: "{searchQuery}"
-                    </span>
-                  )}
-                </div>
-                
-                {/* Quick actions when no results */}
-                {filteredProducts.length === 0 && products.length > 0 && (
-                  <button
-                    onClick={handleClearSearch}
-                    className="
-                      text-sm text-jvcOrange hover:text-orange-600 font-medium
-                      flex items-center gap-1 self-end sm:self-auto
-                    "
-                  >
-                    <span>Show all products</span>
-                    <span>→</span>
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Sticky indicator (only when sticky) */}
-            {isSticky && (
-              <div className="mt-2 flex items-center justify-center">
-                <div className="text-xs text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
-                  🔍 Search active • Scroll to see results
-                </div>
-              </div>
+        <div className="max-w-7xl mx-auto px-6 py-4 border-b">
+          <div className="relative">
+            <FiSearch className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+            <input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search products..."
+              className="w-full pl-12 pr-10 py-3 border rounded-lg bg-gray-50"
+            />
+            {searchQuery && (
+              <button
+                onClick={clearSearch}
+                className="absolute right-4 top-1/2 -translate-y-1/2"
+              >
+                <FiX />
+              </button>
             )}
           </div>
         </div>
       </div>
 
-      {/* Spacer to prevent content jump when sticky */}
-      {isSticky && <div className="h-[140px]"></div>}
+      {isSticky && <div className="h-[88px]" />}
 
-      {/* ================= NO RESULTS ================= */}
-      {filteredProducts.length === 0 && products.length > 0 && (
-        <div className="max-w-7xl mx-auto px-6 mb-10 mt-8">
-          <div className="bg-white rounded-xl border border-gray-200 p-12 text-center">
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gray-100 flex items-center justify-center">
-              <FiSearch className="w-8 h-8 text-gray-400" />
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">
-              No products found
-            </h3>
-            <p className="text-gray-600 mb-6 max-w-md mx-auto">
-              No products match your search criteria. Try different keywords or clear filters.
-            </p>
-            <button
-              onClick={handleClearSearch}
-              className="
-                px-6 py-3
-                bg-jvcOrange text-white font-medium
-                rounded-lg hover:bg-orange-600
-                transition-colors duration-200
-                inline-flex items-center gap-2
-              "
-            >
-              <FiSearch className="w-4 h-4" />
-              View All Products
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* ================= PRODUCT GRID ================= */}
+      {/* PRODUCTS GRID */}
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
-        {filteredProducts.map((product) => (
-          <div
+        {fullProducts.map((product) => (
+          <Link
             key={product.id}
-            onClick={() => openModal(product)}
-            className="cursor-pointer bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group transform hover:-translate-y-0.5"
+            to={`/products/${product.slug}`}
+            className="bg-white rounded-xl border shadow hover:shadow-lg transition overflow-hidden"
           >
-            <div className="h-56 bg-gradient-to-br from-gray-50 to-gray-100 overflow-hidden relative">
-              <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent" />
+            <div className="relative h-56 bg-gray-100">
+              {/* ✅ PRODUCT TYPE TAG */}
+              {product.type && (
+                <span className="absolute top-3 left-3 text-xs px-3 py-1 bg-black/70 text-white rounded-full">
+                  {product.type}
+                </span>
+              )}
+
               <img
                 src={product.image}
-                alt={product.name}
-                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                alt={`${product.name} ${product.type.toLowerCase()} exporter from India for construction and industrial use`}
+                className="w-full h-full object-cover"
               />
-              <div className="absolute top-3 left-3 px-2 py-1 bg-white/90 backdrop-blur-sm rounded-md text-xs font-semibold text-jvcNavy capitalize">
-                {product.category || "Industrial"}
-              </div>
-              {/* Search highlight indicator */}
-              {searchQuery && (
-                <div className="absolute top-3 right-3 px-2 py-1 bg-jvcOrange/90 text-white text-xs font-medium rounded-md backdrop-blur-sm animate-pulse">
-                  🔍 Match
-                </div>
-              )}
             </div>
 
             <div className="p-5">
-              <div className="flex items-start justify-between">
-                <div>
-                  {/* Highlight search matches in title */}
-                  <h3 className="text-lg font-bold text-jvcNavy">
-                    {searchQuery ? (
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: product.name.replace(
-                            new RegExp(`(${searchQuery})`, 'gi'),
-                            '<mark class="bg-yellow-200 text-jvcNavy px-1 rounded">$1</mark>'
-                          )
-                        }}
-                      />
-                    ) : (
-                      product.name
-                    )}
-                  </h3>
-                  <p className="mt-1 text-gray-600 text-sm line-clamp-2">
-                    {searchQuery ? (
-                      <span
-                        dangerouslySetInnerHTML={{
-                          __html: product.subtitle.replace(
-                            new RegExp(`(${searchQuery})`, 'gi'),
-                            '<mark class="bg-yellow-200 text-gray-800 px-1 rounded">$1</mark>'
-                          )
-                        }}
-                      />
-                    ) : (
-                      product.subtitle
-                    )}
-                  </p>
-                </div>
-                <div className="ml-3 flex-shrink-0">
-                  <div className="w-8 h-8 rounded-full bg-jvcOrange/10 flex items-center justify-center group-hover:bg-jvcOrange/20 transition-colors">
-                    <span className="text-jvcOrange font-bold text-sm group-hover:scale-110 transition-transform">→</span>
-                  </div>
-                </div>
-              </div>
-              
-              {/* Quick info badges */}
-              <div className="mt-3 flex flex-wrap gap-2">
-                {product.grades && product.grades.map((grade, i) => (
-                  <span key={i} className="px-2 py-1 bg-gray-100 text-gray-600 text-xs rounded-md border border-gray-200">
-                    {grade}
-                  </span>
-                ))}
-                {product.applications && product.applications.length > 0 && (
-                  <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs rounded-md border border-blue-100">
-                    {product.applications.length} application
-                  </span>
-                )}
-              </div>
-              
-              <div className="mt-3 text-xs text-jvcNavy font-medium flex items-center">
-                <span>View Specifications</span>
-                <span className="ml-1 transform group-hover:translate-x-1 transition-transform">→</span>
-              </div>
+              <h3 className="text-lg font-bold text-jvcNavy">
+                {highlightText(product.name, searchQuery)}
+              </h3>
+
+              <p className="text-sm text-gray-600 line-clamp-2">
+                {product.subtitle}
+              </p>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      {/* ================= COMPACT MODAL ================= */}
-      <div className={`
-        fixed inset-0 z-[9999] flex items-center justify-center p-4
-        transition-all duration-300 ease-out
-        ${isModalOpen 
-          ? 'opacity-100 visible' 
-          : 'opacity-0 invisible delay-300'
-        }
-      `}>
-        {/* Backdrop */}
-        <div 
-          className={`
-            absolute inset-0 bg-black/60 transition-opacity duration-300
-            ${isModalOpen ? 'opacity-100' : 'opacity-0'}
-          `}
-          onClick={closeModal}
-        />
-        
-        {/* Modal Container - Properly Centered */}
-        <div className={`
-          w-full max-w-5xl
-          h-[85vh]
-          rounded-2xl
-          transform transition-all duration-400 ease-out
-          ${isModalOpen 
-            ? 'scale-100 opacity-100 translate-y-0' 
-            : 'scale-95 opacity-0 translate-y-4'
-          }
-          overflow-hidden
-          flex flex-col
-          bg-white
-          shadow-2xl
-          relative z-10
-        `}>
-          {/* COMPACT HEADER */}
-          <div className="
-            sticky top-0 z-50
-            bg-white border-b border-gray-200
-            px-5 lg:px-6 py-3 lg:py-4
-            flex items-center justify-between
-          ">
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-5 bg-jvcOrange rounded-full"></div>
-                <h2 className="
-                  text-lg lg:text-xl font-bold text-jvcNavy
-                  truncate
-                ">
-                  {activeProduct?.name}
-                </h2>
-              </div>
-              <p className="
-                text-xs text-gray-500
-                truncate mt-0.5
-              ">
-                {activeProduct?.subtitle}
-              </p>
-            </div>
 
-            {/* COMPACT CLOSE BUTTON */}
+      {/* LITE PRODUCTS */}
+      {liteProducts.length > 0 && (
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+          {liteProducts.map((product) => (
             <button
-              onClick={closeModal}
-              className="
-                w-10 h-10 rounded-full
-                bg-jvcOrange text-white
-                flex items-center justify-center
-                hover:bg-orange-600
-                active:scale-95
-                transition-all duration-200
-                shadow-md
-                flex-shrink-0
-              "
-              aria-label="Close modal"
+              key={product.id}
+              onClick={() => {
+                setEnquiryProductName(product.name);
+                setIsEnquiryOpen(true);
+              }}
+              className="relative text-left bg-white border rounded-lg px-6 py-4 shadow-sm hover:shadow-md transition"
             >
-              <FiX className="w-4 h-4" />
+              {/* ✅ PRODUCT TYPE TAG — TOP RIGHT */}
+              {product.type && (
+                <span className="absolute top-3 right-3 text-xs px-3 py-1 bg-black/70 text-white rounded-full">
+                  {product.type}
+                </span>
+              )}
+
+              <h3 className="font-semibold text-jvcNavy">
+                {highlightText(product.name, searchQuery)}
+              </h3>
+
+              {/* ✅ SUBTITLE (UNCHANGED, SAFE) */}
+              {product.subtitle && (
+                <p className="text-sm text-gray-600 mt-1">
+                  {product.subtitle}
+                </p>
+              )}
             </button>
-          </div>
-
-          {/* MAIN CONTENT - More Compact */}
-          <div 
-            ref={contentRef}
-            className="
-              flex-1 overflow-y-auto
-              px-5 lg:px-6 py-4
-              scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100
-            "
-          >
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-              
-              {/* IMAGE SECTION */}
-              <div className="
-                lg:sticky lg:top-4
-                h-[35vh] lg:h-[calc(85vh-150px)]
-                flex items-center justify-center
-                bg-gradient-to-br from-gray-50 to-white
-                rounded-xl lg:rounded-xl
-                p-3 lg:p-6
-                border border-gray-200
-              ">
-                <img
-                  src={activeProduct?.image}
-                  alt={activeProduct?.name}
-                  className="
-                    max-w-full max-h-full
-                    object-contain
-                    drop-shadow-lg
-                  "
-                />
-              </div>
-
-              {/* DETAILS SECTION - More Dense */}
-              <div className="space-y-5 lg:pr-2">
-                {/* Quick Info Cards */}
-                <div className="grid grid-cols-2 gap-3">
-                  {activeProduct?.purity && (
-                    <div className="bg-blue-50 border border-blue-100 rounded-lg p-3">
-                      <p className="text-xs text-blue-700 font-medium">Purity</p>
-                      <p className="text-sm font-bold text-blue-900">{activeProduct.purity}</p>
-                    </div>
-                  )}
-                  {activeProduct?.moisture && (
-                    <div className="bg-green-50 border border-green-100 rounded-lg p-3">
-                      <p className="text-xs text-green-700 font-medium">Moisture</p>
-                      <p className="text-sm font-bold text-green-900">{activeProduct.moisture}</p>
-                    </div>
-                  )}
-                  {activeProduct?.origin && (
-                    <div className="bg-amber-50 border border-amber-100 rounded-lg p-3">
-                      <p className="text-xs text-amber-700 font-medium">Origin</p>
-                      <p className="text-sm font-bold text-amber-900">{activeProduct.origin}</p>
-                    </div>
-                  )}
-                  {activeProduct?.leadTime && (
-                    <div className="bg-purple-50 border border-purple-100 rounded-lg p-3">
-                      <p className="text-xs text-purple-700 font-medium">Lead Time</p>
-                      <p className="text-sm font-bold text-purple-900">{activeProduct.leadTime}</p>
-                    </div>
-                  )}
-                </div>
-
-                {/* Description */}
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <div className="flex items-center gap-2 mb-2">
-                    <FiInfo className="w-4 h-4 text-jvcOrange" />
-                    <h3 className="text-sm font-semibold text-jvcNavy">
-                      Product Summary
-                    </h3>
-                  </div>
-                  <p className="text-sm text-gray-700 leading-relaxed">
-                    {activeProduct?.description}
-                  </p>
-                </div>
-
-                {/* Applications - Compact */}
-                {activeProduct?.applications?.length > 0 && (
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <FiCheckCircle className="w-4 h-4 text-jvcOrange" />
-                      <h3 className="text-sm font-semibold text-jvcNavy">
-                        Key Applications
-                      </h3>
-                    </div>
-                    <ul className="space-y-1.5">
-                      {activeProduct.applications.map((item, i) => (
-                        <li key={i} className="flex items-start text-xs">
-                          <span className="text-jvcOrange mr-2">•</span>
-                          <span className="text-gray-700">{item}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
-
-                {/* Grades & Sizes - Combined */}
-                {(activeProduct?.grades?.length > 0 || activeProduct?.meshSizes?.length > 0) && (
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {activeProduct?.grades?.length > 0 && (
-                      <div className="bg-white border border-gray-200 rounded-lg p-4">
-                        <div className="flex items-center gap-2 mb-3">
-                          <FiLayers className="w-4 h-4 text-jvcOrange" />
-                          <h3 className="text-sm font-semibold text-jvcNavy">
-                            Grades
-                          </h3>
-                        </div>
-                        <div className="flex flex-wrap gap-1.5">
-                          {activeProduct.grades.map((g, i) => (
-                            <span
-                              key={i}
-                              className="
-                                px-2.5 py-1
-                                bg-jvcOrange/5
-                                border border-jvcOrange/20
-                                text-jvcOrange text-xs font-medium
-                                rounded-lg
-                              "
-                            >
-                              {g}
-                            </span>
-                          ))}
-                          {activeProduct.grades.length > 3 && (
-                            <span className="
-                              px-2.5 py-1
-                              bg-gray-100
-                              border border-gray-200
-                              text-gray-600 text-xs font-medium
-                              rounded-lg
-                            ">
-                              +{activeProduct.grades.length - 3} more
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {activeProduct.meshSizes?.length > 0 && (
-                          <div className="bg-white border border-gray-200 rounded-lg p-4">
-                            <div className="flex items-center gap-2 mb-3">
-                              <FiGrid className="w-4 h-4 text-jvcOrange" />
-                              <h3 className="text-sm font-semibold text-jvcNavy">
-                                Mesh / Particle Size
-                              </h3>
-                            </div>
-
-                            <ul className="text-sm text-gray-700 space-y-1">
-                              {activeProduct.meshSizes.map((mesh, i) => (
-                                <li key={i} className="flex items-start">
-                                  <span className="text-jvcOrange mr-2">•</span>
-                                  <span>{mesh}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                        )}
-                  </div>
-                )}
-
-                {/* Packaging & Quality */}
-                {activeProduct?.packaging?.length > 0 && (
-                  <div className="bg-white border border-gray-200 rounded-lg p-4">
-                    <div className="flex items-center gap-2 mb-3">
-                      <FiPackage className="w-4 h-4 text-jvcOrange" />
-                      <h3 className="text-sm font-semibold text-jvcNavy">
-                        Packaging Details
-                      </h3>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {activeProduct.packaging.map((p, i) => (
-                        <div key={i} className="flex items-center text-xs">
-                          <div className="w-1.5 h-1.5 rounded-full bg-jvcOrange mr-2"></div>
-                          <span className="text-gray-700">{p}</span>
-                        </div>
-                      ))}
-                    </div>
-                    {activeProduct?.qualityStandards && (
-                      <div className="mt-3 pt-3 border-t border-gray-100">
-                        <p className="text-xs font-medium text-gray-600 mb-1">
-                          Quality Standards:
-                        </p>
-                        <div className="flex flex-wrap gap-1.5">
-                          {activeProduct.qualityStandards.map((std, i) => (
-                            <span key={i} className="
-                              px-2 py-0.5
-                              bg-green-50
-                              border border-green-100
-                              text-green-700 text-xs
-                              rounded
-                            ">
-                              {std}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                )}
-
-                {/* Certifications if available */}
-                {activeProduct?.certifications && (
-                  <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-100 rounded-lg p-4">
-                    <p className="text-xs font-semibold text-blue-800 mb-2">
-                      🏆 Certifications & Compliance
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {activeProduct.certifications.map((cert, i) => (
-                        <span key={i} className="
-                          px-2.5 py-1
-                          bg-white/80
-                          border border-blue-200
-                          text-blue-700 text-xs font-medium
-                          rounded-lg
-                          shadow-sm
-                        ">
-                          {cert}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-
-          {/* COMPACT BOTTOM CTA */}
-          <div className="
-            sticky bottom-0
-            bg-white border-t border-gray-200
-            px-5 lg:px-6 py-3
-            shadow-sm
-          ">
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-              <div className="text-xs text-gray-600">
-                <span className="font-medium text-jvcNavy">Ready to order?</span>
-                <span className="ml-1">Get competitive pricing with bulk discounts.</span>
-              </div>
-              <div className="flex gap-3">
-                <button
-                  onClick={() => {
-                    // Download spec sheet
-                    window.open(activeProduct?.specSheet, '_blank');
-                  }}
-                  className="
-                    px-4 py-2
-                    bg-white border border-gray-300
-                    text-gray-700 text-sm font-medium
-                    rounded-lg
-                    hover:bg-gray-50
-                    transition-colors
-                    flex items-center gap-1.5
-                  "
-                >
-                  <FiInfo className="w-3.5 h-3.5" />
-                  Spec Sheet
-                </button>
-                <button
-                  onClick={() => {
-                    closeModal();
-                    const contactSection = document.getElementById('contact');
-                    if (contactSection) {
-                      contactSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                  }}
-                  className="
-                    px-5 py-2.5
-                    bg-gradient-to-r from-jvcOrange to-orange-500
-                    text-white text-sm font-semibold
-                    rounded-lg
-                    hover:from-orange-600 hover:to-orange-500
-                    active:scale-[0.98]
-                    transition-all duration-200
-                    shadow-md hover:shadow
-                    flex-1 sm:flex-none
-                  "
-                >
-                  Get Quote
-                </button>
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
+      )}
+
+
+      {/* SEE ALL PRODUCTS — DESKTOP */}
+      <div className="hidden md:flex justify-center mt-16">
+        <button
+          onClick={clearAllFilters}
+          disabled={!isFiltered}
+          className={`px-10 py-4 rounded-xl font-semibold ${
+            isFiltered
+              ? "bg-jvcOrange text-white hover:bg-orange-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          See All Products →
+        </button>
       </div>
+
+      {/* SEE ALL PRODUCTS — MOBILE */}
+      <div
+        className={`md:hidden fixed bottom-0 left-0 right-0 p-4 bg-white border-t shadow-xl transition-transform duration-300 ${
+          isFiltered ? "translate-y-0" : "translate-y-full"
+        }`}
+      >
+        <button
+          onClick={clearAllFilters}
+          disabled={!isFiltered}
+          className={`w-full py-4 rounded-xl font-semibold transition ${
+            isFiltered
+              ? "bg-jvcOrange text-white hover:bg-orange-600"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
+        >
+          See All Products →
+        </button>
+      </div>
+
+      {/* MODALS */}
+      <ProductModal
+        product={activeProduct}
+        isOpen={isModalOpen}
+        onClose={() => navigate("/products")}
+      />
+
+      <ProductEnquiryModal
+        isOpen={isEnquiryOpen}
+        onClose={() => setIsEnquiryOpen(false)}
+        productName={enquiryProductName}
+      />
     </section>
   );
 };
+
+/* ================= TEXT HIGHLIGHT ================= */
+
+function highlightText(text, query) {
+  if (!query) return text;
+  const escaped = query.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const regex = new RegExp(`(${escaped})`, "gi");
+  return text.split(regex).map((part, i) =>
+    regex.test(part) ? (
+      <span
+        key={i}
+        className="bg-jvcOrange/20 text-jvcOrange px-1 rounded"
+      >
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  );
+}
+
+/* ================= SEO HELPERS ================= */
+
+function updateMetaDescription(content) {
+  let meta = document.querySelector("meta[name='description']");
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.name = "description";
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute("content", content);
+}
+
+function updateCanonical(url) {
+  let link = document.querySelector("link[rel='canonical']");
+  if (!link) {
+    link = document.createElement("link");
+    link.rel = "canonical";
+    document.head.appendChild(link);
+  }
+  link.href = url;
+}
+
+function updateOGTag(property, content) {
+  let meta = document.querySelector(`meta[property='${property}']`);
+  if (!meta) {
+    meta = document.createElement("meta");
+    meta.setAttribute("property", property);
+    document.head.appendChild(meta);
+  }
+  meta.setAttribute("content", content);
+}
+
+/* ================= SCHEMA HELPERS ================= */
+
+function injectProductSchema(product) {
+  removeProductSchema();
+
+  const url = `${window.location.origin}/products/${product.slug}`;
+
+  const unique = (arr) => [...new Set(arr)];
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "@id": url,
+
+    name: product.name,
+
+    description:
+      product.description ||
+      "Industrial mineral supplied by JVC India for global export applications.",
+
+    ...(product.images?.length || product.image
+      ? {
+          image: product.images?.length
+            ? product.images
+            : [product.image],
+        }
+      : {}),
+
+    brand: {
+      "@type": "Brand",
+      name: "JVC India",
+    },
+
+    // 🔹 INDUSTRIAL CONTEXT
+    category: product.type || "Industrial Minerals",
+    material: product.name,
+
+    // 🔹 TARGET BUYERS (B2B SIGNAL)
+    audience: {
+      "@type": "BusinessAudience",
+      "audienceType": "Construction companies, ready-mix concrete plants, Industries, Local Trading Companies"
+    },
+
+    // 🔹 IDENTIFIERS
+    sku: product.slug,
+    mpn: product.slug.toUpperCase(),
+
+    // 🔹 TECHNICAL ATTRIBUTES (ONLY IF PRESENT)
+    ...(product.grades?.length ||
+    product.meshSizes?.length ||
+    product.packaging?.length
+      ? {
+          additionalProperty: [
+            ...(product.grades?.length
+              ? [
+                  {
+                    "@type": "PropertyValue",
+                    name: "Grades",
+                    value: unique(product.grades).join(", "),
+                  },
+                ]
+              : []),
+
+            ...(product.meshSizes?.length
+              ? [
+                  {
+                    "@type": "PropertyValue",
+                    name: "Mesh Size",
+                    value: unique(product.meshSizes).join(", "),
+                  },
+                ]
+              : []),
+
+            ...(product.packaging?.length
+              ? [
+                  {
+                    "@type": "PropertyValue",
+                    name: "Packaging",
+                    value: unique(product.packaging).join(", "),
+                  },
+                ]
+              : []),
+          ],
+        }
+      : {}),
+
+    // 🔹 B2B OFFER (NO PRICE CLAIM)
+    offers: {
+      "@type": "Offer",
+      url,
+      priceCurrency: "USD",
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "Organization",
+        name: "JVC India",
+      },
+    },
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.id = "product-schema";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+function injectCategorySchema(category, products) {
+  const id = "category-schema";
+  if (document.getElementById(id)) return;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: `${category} Products`,
+    description: `Exporter and bulk supplier of ${category.toLowerCase()} from India for construction and industrial applications in Middle East and global markets.`,
+    url: `${window.location.origin}/products/${toSlug(category)}`,
+    hasPart: products.map((p) => ({
+      "@type": "Product",
+      name: p.name,
+      url: `${window.location.origin}/products/${p.slug}`,
+    })),
+  };
+
+  const script = document.createElement("script");
+  script.id = id;
+  script.type = "application/ld+json";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+
+
+function removeProductSchema() {
+  const s = document.getElementById("product-schema");
+  if (s) s.remove();
+}
+
+function injectProductListSchema(products) {
+  removeProductListSchema();
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    itemListElement: products.map((p, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: p.name,
+      url: `${window.location.origin}/products/${p.slug}`,
+    })),
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.id = "product-list-schema";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+function removeProductListSchema() {
+  const s = document.getElementById("product-list-schema");
+  if (s) s.remove();
+}
+
+function injectBreadcrumbSchema(entity) {
+  removeBreadcrumbSchema();
+
+  const items = [
+    {
+      "@type": "ListItem",
+      position: 1,
+      name: "Home",
+      item: window.location.origin,
+    },
+    {
+      "@type": "ListItem",
+      position: 2,
+      name: "Products",
+      item: `${window.location.origin}/products`,
+    },
+  ];
+
+  if (entity?.slug) {
+    items.push({
+      "@type": "ListItem",
+      position: 3,
+      name: entity.name,
+      item: `${window.location.origin}/products/${entity.slug}`,
+    });
+  }
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items,
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.id = "breadcrumb-schema";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+
+function removeBreadcrumbSchema() {
+  const s = document.getElementById("breadcrumb-schema");
+  if (s) s.remove();
+}
 
 export default ProductsPage;

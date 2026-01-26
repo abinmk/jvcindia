@@ -1,62 +1,80 @@
 {
-    "header":{
-      "logo": "/images/logo.png",
-      "subtitle": "Natural Minerals & Ores"
-    },
-    "hero": {
-      "image": "/images/minerals-hero.webp",
-      "titleLine1": "Exporters & Overseas Traders of",
-      "highlight": "Natural Minerals, Ores,",
-      "titleLine2": "& Cement Admixture",
-      "minHeightMobile": "360px",
-      "minHeightDesktop": "520px"
-    },
+  "header": {
+    "logo": "/images/logo.png",
+    "subtitle": "Natural Minerals & Ores"
+  },
+  "hero": {
+    "image": "/images/minerals-hero.webp",
+    "titleLine1": "Trusted Global Partner",
+    "highlight": "Natural Minerals, Ores,",
+    "titleLine2": "& Concrete Admixture",
+    "minHeightMobile": "360px",
+    "minHeightDesktop": "520px"
+  },
 
-    "about": {
-      "title": "About JVC India",
-      "description": "Founded in 2008 and headquartered in Aluva, Kerala, JVC India has established a strong reputation as a trusted exporter of quality Indian products. The company specializes in trading and exporting natural minerals, ores, and cement admixtures, along with chemical fertilizers, fly ash powder, garnet abrasives, quartz crystals, and other processed minerals — delivering consistent quality, reliability, and value to customers worldwide.",
-      "backgroundImage": "/images/about-us.webp",
-  
-      "cards": [
-        {
-          "label": "OUR MISSION",
-          "heading": "Delivering Reliable Mineral Supply",
-          "content": "Our mission is to supply export-grade industrial minerals that meet international specifications while ensuring dependable sourcing, consistent quality, and efficient logistics for our customers worldwide."
-        },
-        {
-          "label": "OUR VALUES",
-          "heading": "Integrity, Quality & Partnership",
-          "content": "We operate with transparency, ethical sourcing practices, and a strong commitment to quality. Our focus is on building long-term relationships through reliability, accountability, and continuous improvement."
-        }
-      ],
-  
-      "credibilityLine": "Export-focused • Industry-compliant • Long-term global partnerships"
-    },
+  "about": {
+    "title": "About JVC India",
+    "description": "Founded in 2008 and headquartered in Aluva, Kerala, JVC India has established a strong reputation as a trusted exporter of quality Indian products. The company specializes in trading and exporting natural minerals, ores, and concrete admixtures, along with chemical fertilizers, fly ash powder, garnet abrasives, quartz crystals, and other processed minerals — delivering consistent quality, reliability, and value to customers worldwide.",
+    "backgroundImage": "/images/about-us.webp",
 
-      "contact": {
-        "title": "Contact JVC India",
-        "description": "Reach out for export enquiries, product specifications, or long-term supply partnerships.",
-        "trustLine": "Export-focused • Bulk supply • Industry-compliant sourcing",
-    
-        "info": {
-          "heading": "Export Enquiries & Partnerships",
-          "text": "We work with global buyers across construction, oil & gas, cement, ceramics, and industrial manufacturing sectors.",
-          "address":"VIII/113 Bypass Junction, Opposite Metro Station, Aluva -Cochin, Kerala 683101",
-          "email1": "sales@jvcindia.com",
-          "email2": "jvcindiaexim@gmail.com",
-          "phone1": "+91 93888 333 77",
-          "phone2": "+91 93880 333 77",
-          "phone3": "+91 93882 333 77",
-          "responseTime": "Within 24 business hours",
-          "markets": "Asia • Middle East • Europe • Africa"
-        },
-    
-        "form": {
-          "nameLabel": "Your Name",
-          "emailLabel": "Your Email",
-          "messageLabel": "Your Requirement",
-          "messagePlaceholder": "Product, grade, quantity, destination, etc.",
-          "cta": "Send Enquiry"
-        }
+    "cards": [
+      {
+        "label": "OUR MISSION",
+        "heading": "Delivering Reliable Mineral Supply",
+        "content": "Our mission is to supply export-grade industrial minerals that meet international specifications while ensuring dependable sourcing, consistent quality, and efficient logistics for our customers worldwide."
+      },
+      {
+        "label": "OUR VALUES",
+        "heading": "Integrity, Quality & Partnership",
+        "content": "We operate with transparency, ethical sourcing practices, and a strong commitment to quality. Our focus is on building long-term relationships through reliability, accountability, and continuous improvement."
       }
+    ],
+
+    "services": [
+      {
+        "title": "Global Supply",
+        "description": "Export of premium minerals, ores, and cement admixtures from trusted Indian sources.",
+        "icon": "/images/icons/globe.webp"
+      },
+      {
+        "title": "Custom Packing & Branding",
+        "description": "Tailored packaging solutions and private labeling as per client or market requirements.",
+        "icon": "/images/icons/bag.webp"
+      },
+      {
+        "title": "Export & Logistics Support",
+        "description": "Reliable shipping and documentation for smooth global trade.",
+        "icon": "/images/icons/ship.webp"
+      }
+    ],
+
+    "credibilityLine": "Export-focused • Industry-compliant • Long-term global partnerships"
+  },
+
+  "contact": {
+    "title": "Contact JVC India",
+    "description": "Reach out for export enquiries, product specifications, or long-term supply partnerships.",
+    "trustLine": "Export-focused • Bulk supply • Industry-compliant sourcing",
+
+    "info": {
+      "heading": "Export Enquiries & Partnerships",
+      "text": "We work with global buyers across construction, oil & gas, cement, ceramics, and industrial manufacturing sectors.",
+      "address": "VIII/113 Bypass Junction, Opposite Metro Station, Aluva -Cochin, Kerala 683101",
+      "email1": "sales@jvcindia.com",
+      "email2": "jose@jvcindia.com",
+      "phone1": "+91 93888 333 77",
+      "phone2": "+91 93880 333 77",
+      "phone3": "+91 93882 333 77",
+      "responseTime": "Within 24 business hours",
+      "markets": "Asia • Middle East • Europe • Africa • North America • South America • Oceania "
+    },
+
+    "form": {
+      "nameLabel": "Your Name",
+      "emailLabel": "Your Email",
+      "messageLabel": "Your Requirement",
+      "messagePlaceholder": "Product, grade, quantity, destination, etc.",
+      "cta": "Send Enquiry"
+    }
   }
+}
