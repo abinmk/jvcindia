@@ -9,11 +9,13 @@ import {
 } from "react-icons/fi";
 
 import ProductEnquiryModal from "./ProductEnquiryModal";
+import SpecSheetModal from "./SpecSheetModal"; // ✅ NEW
 
 const ProductModal = ({ product, isOpen, onClose }) => {
   const contentRef = useRef(null);
   const [showEnquiry, setShowEnquiry] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [pendingSpecSheet, setPendingSpecSheet] = useState(null); // ✅ NEW
 
   /* ---------------- NORMALIZE IMAGES ---------------- */
   const images = useMemo(() => {
@@ -34,6 +36,7 @@ const ProductModal = ({ product, isOpen, onClose }) => {
   /* ---------------- CLOSE EVERYTHING ---------------- */
   const closeAllModals = () => {
     setShowEnquiry(false);
+    setPendingSpecSheet(null);
     onClose();
   };
 
@@ -55,7 +58,10 @@ const ProductModal = ({ product, isOpen, onClose }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    if (!isOpen) setShowEnquiry(false);
+    if (!isOpen) {
+      setShowEnquiry(false);
+      setPendingSpecSheet(null);
+    }
   }, [isOpen]);
 
   if (!isOpen || !product) return null;
@@ -63,7 +69,12 @@ const ProductModal = ({ product, isOpen, onClose }) => {
   return (
     <>
       {/* ================= PRODUCT MODAL ================= */}
-      <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-label={`${product.name} product details`}
+        className="fixed inset-0 z-[9999] flex items-center justify-center p-4"
+      >
         {/* Backdrop */}
         <div
           className="absolute inset-0 bg-black/60"
@@ -71,24 +82,27 @@ const ProductModal = ({ product, isOpen, onClose }) => {
         />
 
         {/* Modal */}
-        <div
-          className="
-            relative z-10
-            w-full max-w-5xl h-[85vh]
-            bg-white rounded-2xl shadow-2xl
-            flex flex-col overflow-hidden
-          "
-        >
+        <div className="
+          relative z-10
+          w-full max-w-5xl h-[85vh]
+          bg-white rounded-2xl shadow-2xl
+          flex flex-col overflow-hidden
+        ">
           {/* HEADER */}
           <div className="sticky top-0 z-20 bg-white border-b px-6 py-4 flex justify-between items-center">
             <div>
-              <h2 className="text-xl font-bold text-jvcNavy">
-                {product.name}
-              </h2>
-              <p className="text-sm text-gray-500">
+            {/* ✅ SEO PRIMARY HEADING */}
+            <h1 className="text-xl md:text-2xl font-bold text-jvcNavy leading-tight">
+              {product.name}
+            </h1>
+
+            {/* ✅ SUPPORTING HEADING */}
+            {product.subtitle && (
+              <h2 className="text-sm md:text-base text-gray-500 font-medium mt-1">
                 {product.subtitle}
-              </p>
-            </div>
+              </h2>
+            )}
+          </div>
 
             <button
               onClick={closeAllModals}
@@ -110,43 +124,34 @@ const ProductModal = ({ product, isOpen, onClose }) => {
           >
             {/* ================= IMAGE GALLERY ================= */}
             <div className="flex flex-col h-full space-y-4">
-              {/* MAIN IMAGE (VERTICALLY CENTERED) */}
-              <div className="
-                flex-1
-                bg-gray-50 rounded-xl
-                p-4
-                flex items-center justify-center
-              ">
+              <div className="flex-1 bg-gray-50 rounded-xl p-4 flex items-center justify-center">
                 {images.length > 0 && (
                   <img
                     src={images[activeImage]}
-                    alt={product.name}
+                    alt={`${product.name} bulk export from India for construction and industrial applications`}
                     className="max-h-full max-w-full object-contain"
+                    loading="lazy"
                   />
                 )}
               </div>
 
-              {/* THUMBNAILS */}
               {images.length > 1 && (
                 <div className="flex gap-3 overflow-x-auto pb-1">
                   {images.map((img, i) => (
                     <button
                       key={i}
                       onClick={() => setActiveImage(i)}
-                      className={`
-                        h-16 w-20
-                        rounded-lg overflow-hidden
-                        border
-                        flex-shrink-0
-                        ${i === activeImage
+                      className={`h-16 w-20 rounded-lg overflow-hidden border ${
+                        i === activeImage
                           ? "border-jvcOrange"
-                          : "border-gray-200"}
-                      `}
+                          : "border-gray-200"
+                      }`}
                     >
                       <img
                         src={img}
-                        alt={`${product.name} ${i + 1}`}
+                        alt={`${product.name} bulk export material from India for industrial use (image ${i + 1})`}
                         className="w-full h-full object-contain bg-white"
+                        loading="lazy"
                       />
                     </button>
                   ))}
@@ -247,14 +252,12 @@ const ProductModal = ({ product, isOpen, onClose }) => {
 
             <div className="flex gap-3 w-full sm:w-auto">
               {product.specSheet && (
-                <a
-                  href={product.specSheet}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <button
+                  onClick={() => setPendingSpecSheet(product.specSheet)}
                   className="px-4 py-2 border rounded-lg text-sm"
                 >
                   Spec Sheet
-                </a>
+                </button>
               )}
 
               <button
@@ -273,6 +276,14 @@ const ProductModal = ({ product, isOpen, onClose }) => {
         isOpen={showEnquiry}
         onClose={() => setShowEnquiry(false)}
         productName={product.name}
+      />
+
+      {/* ================= SPEC SHEET MODAL ================= */}
+      <SpecSheetModal
+        isOpen={!!pendingSpecSheet}
+        onClose={() => setPendingSpecSheet(null)}
+        productName={product.name}
+        specSheetUrl={pendingSpecSheet}
       />
     </>
   );

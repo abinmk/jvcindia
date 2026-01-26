@@ -4,20 +4,29 @@
     "slug": "baryte",
     "name": "Baryte",
     "subtitle": "Oil Drilling & Industrial Applications",
+    "type": "Natural Minerals", 
     "description": "Baryte is a naturally occurring mineral composed of barium sulfate (BaSO₄), known for its high specific gravity, chemical inertness, and whiteness. It is widely used as a weighting agent in oil & gas drilling fluids and in paints, plastics, rubber, and filler applications.",
     "applications": [
       "Oil & Gas Drilling Fluids",
       "Paints & Coatings",
       "Plastics & Rubber",
       "Industrial Fillers",
-      "Industrial Fillers22",
-      "Industrial Fillers333"
+      "Oil & Gas Drilling Fluids",
+      "Paints & Coatings",
+      "Plastics & Rubber",
+      "Industrial Fillers"
     ],
     "grades": [
       "Drilling Grade – High density, low silica",
       "Industrial Grade – Paints, plastics, rubber"
     ],
     "meshSizes": [
+      "100",
+      "100",
+      "100",
+      "100",
+      "100",
+      "100",
       "Custom mesh sizes available on request"
     ],
     "packaging": [
@@ -26,22 +35,64 @@
       "20 ft / 40 ft Containers"
     ],
     "image": "/images/products/baryte/baryte.webp",
-
     "images": [
-    "/images/products/baryte/baryte.webp",
-    "/images/products/baryte/baryte-1.webp",
-    "/images/products/baryte/baryte-2.webp"
-      ],
-
+      "/images/products/baryte/baryte.webp",
+      "/images/products/baryte/baryte-1.webp",
+      "/images/products/baryte/baryte.webp"
+    ],
     "specSheet": "/specs/baryte.pdf"
   },
 
-
+  {
+    "id": "Baryte-Stone",
+    "slug": "baryteStone",
+    "name": "Baryte Stone",
+    "subtitle": "Oil Drilling & Industrial Applications",
+    "type": "Ores", 
+    "description": "Baryte Stone is a naturally occurring mineral composed of barium sulfate (BaSO₄), known for its high specific gravity, chemical inertness, and whiteness. It is widely used as a weighting agent in oil & gas drilling fluids and in paints, plastics, rubber, and filler applications.",
+    "applications": [
+      "Oil & Gas Drilling Fluids",
+      "Paints & Coatings",
+      "Plastics & Rubber",
+      "Industrial Fillers",
+      "Oil & Gas Drilling Fluids",
+      "Paints & Coatings",
+      "Plastics & Rubber",
+      "Industrial Fillers"
+    ],
+    "grades": [
+      "Drilling Grade – High density, low silica",
+      "Industrial Grade – Paints, plastics, rubber"
+    ],
+    "meshSizes": [
+      "100",
+      "100",
+      "100",
+      "100",
+      "100",
+      "100",
+      "Custom mesh sizes available on request"
+    ],
+    "packaging": [
+      "50 Kg Plain / Custom Bags",
+      "1 Ton Jumbo Bags",
+      "20 ft / 40 ft Containers"
+    ],
+    "image": "/images/products/baryte/baryte-1.webp",
+    "images": [
+      "/images/products/baryte/baryte.webp",
+      "/images/products/baryte/baryte-1.webp",
+      "/images/products/baryte/baryte.webp"
+    ],
+    "specSheet": "/specs/baryte.pdf"
+  },
 
   {
     "id": "calcium-carbonate",
+    "slug": "calcium-carbonate",
     "name": "Calcium Carbonate",
     "subtitle": "Industrial & Construction Grade",
+    "type": "Natural Minerals",
     "description": "Calcium Carbonate is a versatile industrial mineral widely used in construction, plastics, paper, paints, and rubber industries. It offers high purity, excellent whiteness, and controlled particle size for consistent industrial performance.",
     "applications": [
       "Construction Materials",
@@ -61,20 +112,18 @@
       "20 ft / 40 ft Containers"
     ],
     "image": "/images/products/calcium-carbonate.webp",
-
     "images": [
-    "/images/products/baryte/baryte.webp",
-    "/images/products/baryte/baryte-1.webp",
-    "/images/products/baryte/baryte-1.webp"
-      ],
-      
-    "specSheet": "/specs/baryte.pdf"
+      "/images/products/calcium-carbonate.webp"
+    ],
+    "specSheet": "/specs/calcium-carbonate.pdf"
   },
 
   {
     "id": "phospho-gypsum",
+    "slug": "phospho-gypsum",
     "name": "Phospho Gypsum",
     "subtitle": "Cement & Agriculture Applications",
+    "type": "Natural Minerals",
     "description": "Phospho Gypsum is a by-product of phosphoric acid manufacturing, primarily composed of calcium sulfate dihydrate (CaSO₄·2H₂O). It is widely used in cement production, agriculture, and construction materials.",
     "applications": [
       "Cement Industry",
@@ -84,8 +133,7 @@
     ],
     "grades": [
       "Cement Grade",
-      "Agricultural Grade",
-      "Moisture-Controlled Supply"
+      "Agricultural Grade"
     ],
     "meshSizes": [
       "Standard sizes available on request"
@@ -97,13 +145,18 @@
       "Custom Bulk Packaging"
     ],
     "image": "/images/products/phospho-gypsum.webp",
-    "specSheet": "/specs/baryte.pdf"
+    "images": [
+      "/images/products/phospho-gypsum.webp"
+    ],
+    "specSheet": "/specs/phospho-gypsum.pdf"
   },
 
   {
     "id": "quartz-silica-sand",
+    "slug": "quartz-silica-sand",
     "name": "Quartz Silica Sand",
     "subtitle": "Glass, Foundry & High-Tech Industries",
+    "type": "Natural Minerals",
     "description": "Quartz Silica Sand is a high-purity silica derived from naturally occurring quartz stone. It is a key raw material for glass, foundry, construction, and high-tech industries such as semiconductors and photovoltaics.",
     "applications": [
       "Glass Manufacturing",
@@ -130,13 +183,18 @@
       "20 ft / 40 ft Containers"
     ],
     "image": "/images/products/quartz.webp",
-    "specSheet": "/specs/baryte.pdf"
+    "images": [
+      "/images/products/quartz.webp"
+    ],
+    "specSheet": "/specs/quartz-silica-sand.pdf"
   },
 
   {
     "id": "silica-fume",
+    "slug": "silica-fume",
     "name": "Silica Fume (Microsilica)",
     "subtitle": "High-Performance Concrete Additive",
+    "type": "Concrete Ad-Mixture",
     "description": "Silica Fume is an ultra-fine pozzolanic material obtained as a by-product of silicon alloy production. With particle size less than 1 micron, it significantly enhances concrete strength, durability, and chemical resistance.",
     "applications": [
       "High-Strength Concrete",
@@ -156,13 +214,18 @@
       "20 ft / 40 ft Containers"
     ],
     "image": "/images/products/silica-fume.webp",
-    "specSheet": "/specs/baryte.pdf"
+    "images": [
+      "/images/products/silica-fume.webp"
+    ],
+    "specSheet": "/specs/silica-fume.pdf"
   },
 
   {
     "id": "fly-ash",
+    "slug": "fly-ash",
     "name": "Fly Ash",
     "subtitle": "Pozzolanic Cement Material",
+    "type": "Processed Minerals",
     "description": "Fly Ash is a fine powdery by-product from coal combustion in thermal power plants. Rich in silica and alumina, it improves concrete strength, workability, and durability while reducing environmental impact.",
     "applications": [
       "Ready-Mix Concrete",
@@ -182,15 +245,25 @@
       "20 ft / 40 ft Containers"
     ],
     "image": "/images/products/fly-ash.webp",
-    "specSheet": "/specs/baryte.pdf"
+    "images": [
+      "/images/products/fly-ash.webp"
+    ],
+    "specSheet": "/specs/fly-ash.pdf"
   },
 
   {
     "id": "bentonite",
+    "slug": "bentonite",
     "name": "Bentonite",
     "subtitle": "Drilling & Industrial Clay",
+    "type": "Natural Minerals",
     "description": "Bentonite is a natural clay rich in montmorillonite, known for its excellent swelling, binding, and absorbent properties. It is widely used in drilling, foundry casting, construction, and waterproofing applications.",
-  
+    "applications": [
+      "Drilling Fluids",
+      "Foundry Casting",
+      "Construction",
+      "Waterproofing"
+    ],
     "grades": [
       "Sodium Bentonite – High swelling grade",
       "Calcium Bentonite – Absorbent grade"
@@ -204,6 +277,57 @@
       "20 ft / 40 ft Containers"
     ],
     "image": "/images/products/bentonite.webp",
-    "specSheet": "/specs/baryte.pdf"
+    "images": [
+      "/images/products/bentonite.webp"
+    ],
+    "specSheet": "/specs/bentonite.pdf"
+  },
+
+  {
+    "id": "sample-product-1",
+    "slug": "sample-product-1",
+    "name": "Sample-Product-01",
+    "subtitle": "Basic Application",
+    "type": "Natural Minerals"
+  },
+
+    {
+    "id": "sample-product-2",
+    "slug": "sample-product-2",
+    "name": "Sample-Product-02",
+    "subtitle": "Basic Application",
+    "type": "Natural Minerals"
+  },
+
+  {
+    "id": "sample-product-3",
+    "slug": "sample-product-3",
+    "name": "Sample-Product-03",
+    "subtitle": "Basic Application",
+    "type": "Natural Minerals"
+  },
+
+    {
+    "id": "sample-product-4",
+    "slug": "sample-product-4",
+    "name": "Sample-Product-04",
+    "subtitle": "Basic Application",
+    "type": "Concrete Ad-Mixture"
+  },
+
+  {
+    "id": "sample-product-5",
+    "slug": "sample-product-5",
+    "name": "Sample-Product-05",
+    "subtitle": "Basic Application",
+    "type": "Ores"
+  },
+
+  {
+    "id": "sample-product-6",
+    "slug": "sample-product-6",
+    "name": "Sample-Product-06",
+    "subtitle": "Basic Application",
+    "type": "Industrial Chemical"
   }
 ]

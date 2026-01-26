@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import ProductModal from "./ProductModal";
 
 const VISIBLE = 3;
 const AUTO_SCROLL = 4500;
@@ -8,14 +7,22 @@ const AUTO_SCROLL = 4500;
 const ProductsGrid = () => {
   const [products, setProducts] = useState([]);
   const [index, setIndex] = useState(0);
-  const [activeProduct, setActiveProduct] = useState(null);
   const timerRef = useRef(null);
 
   /* ---------------- FETCH PRODUCTS ---------------- */
   useEffect(() => {
     fetch("/data/products.json")
       .then((res) => res.json())
-      .then(setProducts)
+      .then((data) => {
+        // ✅ FILTER: keep ONLY main products
+        const mainProducts = data.filter(
+          (p) =>
+            p.image &&
+            p.description &&
+            p.applications?.length
+        );
+        setProducts(mainProducts);
+      })
       .catch(console.error);
   }, []);
 
@@ -33,14 +40,6 @@ const ProductsGrid = () => {
   const next = () => setIndex((i) => (i + 1) % products.length);
   const prev = () =>
     setIndex((i) => (i === 0 ? products.length - 1 : i - 1));
-
-  const openModal = (product) => {
-    setActiveProduct(product);
-  };
-
-  const closeModal = () => {
-    setActiveProduct(null);
-  };
 
   if (!products.length) return null;
 
@@ -94,57 +93,61 @@ const ProductsGrid = () => {
             const isCenter = i === 1;
 
             return (
-              <motion.div
+              <a
                 key={product.id}
-                onClick={() => openModal(product)}
-                className="cursor-pointer"
-                initial={{ opacity: 0, x: 80 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                href={`/products/${product.slug}`}
+                className="block"
               >
                 <motion.div
-                  className="
-                    bg-gray-50
-                    rounded-2xl
-                    shadow-sm
-                    overflow-hidden
-                    hover:shadow-lg transition-shadow
-                  "
-                  animate={{
-                    scale: isCenter ? 1.05 : 0.9,
-                    opacity: isCenter ? 1 : 0.85,
-                  }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="cursor-pointer"
+                  initial={{ opacity: 0, x: 80 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                  {/* IMAGE — BORDERLESS (UNCHANGED) */}
-                  <div className="h-72 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
-                    <motion.img
-                      src={product.image}
-                      alt={product.name}
-                      className="w-full h-full object-contain"
-                      initial={{ scale: 1.35 }}
-                      whileHover={{ scale: 1.55 }}
-                      transition={{ duration: 0.6, ease: "easeOut" }}
-                    />
-                  </div>
+                  <motion.div
+                    className="
+                      bg-gray-50
+                      rounded-2xl
+                      shadow-sm
+                      overflow-hidden
+                      hover:shadow-lg transition-shadow
+                    "
+                    animate={{
+                      scale: isCenter ? 1.05 : 0.9,
+                      opacity: isCenter ? 1 : 0.85,
+                    }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                  >
+                    {/* IMAGE */}
+                    <div className="h-72 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center overflow-hidden">
+                      <motion.img
+                        src={product.image}
+                        alt={`${product.name} ${product.type.toLowerCase()} exporter from India for construction and industrial use`}
+                        className="w-full h-full object-contain"
+                        initial={{ scale: 1.35 }}
+                        whileHover={{ scale: 1.55 }}
+                        transition={{ duration: 0.6, ease: "easeOut" }}
+                      />
+                    </div>
 
-                  {/* CONTENT */}
-                  <div className="px-6 py-6">
-                    <h3 className="text-lg font-semibold text-jvcNavy">
-                      {product.name}
-                    </h3>
-                    <p className="mt-1 text-sm text-gray-600">
-                      {product.subtitle}
-                    </p>
-
-                    {product.variants?.length > 0 && (
-                      <p className="mt-3 text-xs font-medium text-jvcOrange">
-                        {product.variants.length} grades available
+                    {/* CONTENT */}
+                    <div className="px-6 py-6">
+                      <h3 className="text-lg font-semibold text-jvcNavy">
+                        {product.name}
+                      </h3>
+                      <p className="mt-1 text-sm text-gray-600">
+                        {product.subtitle}
                       </p>
-                    )}
-                  </div>
+
+                      {product.variants?.length > 0 && (
+                        <p className="mt-3 text-xs font-medium text-jvcOrange">
+                          {product.variants.length} grades available
+                        </p>
+                      )}
+                    </div>
+                  </motion.div>
                 </motion.div>
-              </motion.div>
+              </a>
             );
           })}
         </div>
@@ -170,13 +173,6 @@ const ProductsGrid = () => {
           View All Products →
         </a>
       </div>
-
-      {/* ================= PRODUCT MODAL ================= */}
-      <ProductModal
-        product={activeProduct}
-        isOpen={!!activeProduct}
-        onClose={closeModal}
-      />
     </section>
   );
 };

@@ -8,6 +8,8 @@ const AboutSection = () => {
       .then((res) => res.json())
       .then((data) => setAbout(data.about))
       .catch(console.error);
+
+    injectOrganizationSchema();
   }, []);
 
   if (!about) return null;
@@ -107,6 +109,11 @@ const AboutSection = () => {
           </div>
         )}
 
+        <p className="sr-only">
+          JVC India operates as an experienced industrial minerals export company
+          from India, supporting global buyers with consistent quality, export
+          documentation, and bulk shipment capabilities across international markets.
+        </p>
 
         {/* Credibility Line */}
         {about.credibilityLine && (
@@ -120,5 +127,45 @@ const AboutSection = () => {
     </section>
   );
 };
+
+function injectOrganizationSchema() {
+  const existing = document.getElementById("org-schema");
+  if (existing) return;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "JVC India",
+    url: window.location.origin,
+    description:
+      "JVC India is an industrial minerals exporter from India supplying processed and raw mineral products to global markets.",
+    address: {
+      "@type": "PostalAddress",
+      addressCountry: "IN"
+    },
+    areaServed: "Worldwide",
+    knowsAbout: [
+      "Industrial Minerals",
+      "Mineral Export",
+      "Bulk Mineral Supply",
+      "Global Export Logistics"
+    ]
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.id = "org-schema";
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+<p className="sr-only">
+  JVC India is an Indian exporter and supplier of industrial minerals,
+  construction minerals, micro silica, silica fume, quartz sand,
+  gypsum powder, GGBS, ores, and industrial raw materials serving
+  Middle East and global markets.
+</p>
+
+
 
 export default AboutSection;

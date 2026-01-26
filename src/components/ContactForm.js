@@ -37,6 +37,33 @@ const DISPOSABLE_EMAIL_DOMAINS = [
   "sharklasers.com",
 ];
 
+function injectLocalBusinessSchema() {
+  const id = "localbusiness-schema";
+  if (document.getElementById(id)) return;
+
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "@id": "https://www.jvcindia.com/#localbusiness",
+    name: "JVC India",
+    url: "https://www.jvcindia.com/",
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Cochin",
+      addressRegion: "Kerala",
+      addressCountry: "IN",
+    },
+    areaServed: "Worldwide",
+  };
+
+  const script = document.createElement("script");
+  script.type = "application/ld+json";
+  script.id = id;
+  script.text = JSON.stringify(schema);
+  document.head.appendChild(script);
+}
+
+
 const BLOCKED_EMAIL_PREFIXES = [
   "test",
   "testing",
@@ -94,6 +121,13 @@ const ContactForm = () => {
       .then((res) => res.json())
       .then((data) => setMeta(data.contact))
       .catch(console.error);
+    
+      injectLocalBusinessSchema();
+
+    return () => {
+      const s = document.getElementById("localbusiness-schema");
+      if (s) s.remove();
+    };
   }, []);
 
   if (!meta) return null;
@@ -183,7 +217,7 @@ const ContactForm = () => {
                 <InfoRow icon={FiPhone} label="Phone" values={[meta.info.phone1, meta.info.phone2, meta.info.phone3]} />
                 <InfoRow icon={FiMapPin} label="Address" value={meta.info.address} />
                 <InfoRow icon={FiClock} label="Response Time" value={meta.info.responseTime} />
-                <InfoRow icon={FiGlobe} label="Markets" value={meta.info.markets} />
+                <InfoRow icon={FiGlobe} label="Markets We Serve" value={meta.info.markets} />
               </div>
 
             {/* LOCATION */}
