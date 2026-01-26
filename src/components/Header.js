@@ -160,7 +160,7 @@ const Header = () => {
           <button onClick={goHome} className="flex items-center space-x-4 text-left">
             <div className="leading-tight">
               <img src={meta.logo} alt="JVC India" className="h-12 w-auto" />
-              <div className="text-sm md:text-base tracking-wide font-medium ml-3">
+              <div className="text-sm md:text-base tracking-tight font-medium ml-3">
                 {meta.subtitle}
               </div>
             </div>

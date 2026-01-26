@@ -13,9 +13,12 @@ import SpecSheetModal from "./SpecSheetModal"; // ✅ NEW
 
 const ProductModal = ({ product, isOpen, onClose }) => {
   const contentRef = useRef(null);
+  const justOpenedRef = useRef(true);
   const [showEnquiry, setShowEnquiry] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
   const [pendingSpecSheet, setPendingSpecSheet] = useState(null); // ✅ NEW
+  const [isZoomOpen, setIsZoomOpen] = useState(false); // 🔍 image zoom
+
 
   /* ---------------- NORMALIZE IMAGES ---------------- */
   const images = useMemo(() => {
@@ -28,6 +31,24 @@ const ProductModal = ({ product, isOpen, onClose }) => {
     }
     return [];
   }, [product]);
+
+  /* ---------------- GRADE LAYOUT LOGIC ---------------- */
+  const hasLongGrades = useMemo(() => {
+    return product?.grades?.some(g => g.length > 30);
+  }, [product]);
+
+  /* ---------------- IMAGE NAVIGATION ---------------- */
+  const showPrevImage = () => {
+    setActiveImage((prev) =>
+      prev === 0 ? images.length - 1 : prev - 1
+    );
+  };
+
+  const showNextImage = () => {
+    setActiveImage((prev) =>
+      prev === images.length - 1 ? 0 : prev + 1
+    );
+  };
 
   useEffect(() => {
     setActiveImage(0);
@@ -58,11 +79,20 @@ const ProductModal = ({ product, isOpen, onClose }) => {
   }, [isOpen]);
 
   useEffect(() => {
-    if (!isOpen) {
+    if (isOpen) {
+      justOpenedRef.current = true;
+
+      // allow interaction after first paint
+      requestAnimationFrame(() => {
+        justOpenedRef.current = false;
+      });
+    } else {
       setShowEnquiry(false);
       setPendingSpecSheet(null);
+      setIsZoomOpen(false);
     }
   }, [isOpen]);
+
 
   if (!isOpen || !product) return null;
 
@@ -123,41 +153,87 @@ const ProductModal = ({ product, isOpen, onClose }) => {
             "
           >
             {/* ================= IMAGE GALLERY ================= */}
-            <div className="flex flex-col h-full space-y-4">
-              <div className="flex-1 bg-gray-50 rounded-xl p-4 flex items-center justify-center">
-                {images.length > 0 && (
-                  <img
-                    src={images[activeImage]}
-                    alt={`${product.name} bulk export from India for construction and industrial applications`}
-                    className="max-h-full max-w-full object-contain"
-                    loading="lazy"
-                  />
+            <div className="lg:sticky lg:top-24 self-start">
+              <div className="flex flex-col space-y-4">
+                {/* Main Image */}
+                <div className="relative bg-gray-50 rounded-xl p-4 h-[420px] flex items-center justify-center">
+                  {/* LEFT ARROW */}
+                  {images.length > 1 && (
+                    <button
+                      onClick={showPrevImage}
+                      className="
+                        absolute left-2 top-1/2 -translate-y-1/2
+                        w-9 h-9 rounded-full
+                        bg-white/80 hover:bg-white
+                        shadow flex items-center justify-center
+                        text-lg
+                      "
+                      aria-label="Previous image"
+                    >
+                      ‹
+                    </button>
+                  )}
+
+                  {/* MAIN IMAGE */}
+                  {images.length > 0 && (
+                    <img
+                      src={images[activeImage]}
+                      alt={product.name}
+                      onClick={() => {
+                        if (justOpenedRef.current) return;
+                        setIsZoomOpen(true);
+                      }}
+                      className="
+                        max-h-[420px] max-w-full object-contain
+                        cursor-zoom-in
+                      "
+                    />
+                  )}
+
+                  {/* RIGHT ARROW */}
+                  {images.length > 1 && (
+                    <button
+                      onClick={showNextImage}
+                      className="
+                        absolute right-2 top-1/2 -translate-y-1/2
+                        w-9 h-9 rounded-full
+                        bg-white/80 hover:bg-white
+                        shadow flex items-center justify-center
+                        text-lg
+                      "
+                      aria-label="Next image"
+                    >
+                      ›
+                    </button>
+                  )}
+                </div>
+
+
+                {/* Thumbnails */}
+                {images.length > 1 && (
+                  <div className="flex gap-3 overflow-x-auto pb-1">
+                    {images.map((img, i) => (
+                      <button
+                        key={i}
+                        onClick={() => setActiveImage(i)}
+                        className={`h-16 w-20 rounded-lg border ${
+                          i === activeImage
+                            ? "border-jvcOrange"
+                            : "border-gray-200"
+                        }`}
+                      >
+                        <img
+                          src={img}
+                          className="w-full h-full object-contain bg-white"
+                          alt={`${product.name} thumbnail ${i + 1}`}
+                        />
+                      </button>
+                    ))}
+                  </div>
                 )}
               </div>
-
-              {images.length > 1 && (
-                <div className="flex gap-3 overflow-x-auto pb-1">
-                  {images.map((img, i) => (
-                    <button
-                      key={i}
-                      onClick={() => setActiveImage(i)}
-                      className={`h-16 w-20 rounded-lg overflow-hidden border ${
-                        i === activeImage
-                          ? "border-jvcOrange"
-                          : "border-gray-200"
-                      }`}
-                    >
-                      <img
-                        src={img}
-                        alt={`${product.name} bulk export material from India for industrial use (image ${i + 1})`}
-                        className="w-full h-full object-contain bg-white"
-                        loading="lazy"
-                      />
-                    </button>
-                  ))}
-                </div>
-              )}
             </div>
+
 
             {/* ================= DETAILS ================= */}
             <div className="space-y-6">
@@ -181,10 +257,22 @@ const ProductModal = ({ product, isOpen, onClose }) => {
                       Applications
                     </h3>
                   </div>
-                  <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
-                    {product.applications.map((a, i) => (
-                      <li key={i}>• {a}</li>
-                    ))}
+                  <ul className="grid grid-cols-1 sm:grid-cols-1 gap-2 text-sm text-gray-700">
+                    {product.applications.map((a, i) => {
+                      const [title, ...rest] = a.split(":");
+                      const description = rest.join(":");
+
+                      return (
+                        <li key={i} className="text-sm text-gray-700">
+                          <span className="font-semibold text-jvcNavy">
+                            {title}
+                          </span>
+                          {description && (
+                            <span>: {description.trim()}</span>
+                          )}
+                        </li>
+                      );
+                    })}
                   </ul>
                 </section>
               )}
@@ -197,34 +285,77 @@ const ProductModal = ({ product, isOpen, onClose }) => {
                       Grades
                     </h3>
                   </div>
-                  <div className="flex flex-wrap gap-2">
+
+                  <div
+                    className={`grid gap-2 ${
+                      hasLongGrades ? "grid-cols-1" : "grid-cols-2"
+                    }`}
+                  >
                     {product.grades.map((g, i) => (
                       <span
-                        key={i}
-                        className="px-3 py-1 text-xs rounded-full border text-jvcOrange border-jvcOrange"
-                      >
-                        {g}
-                      </span>
+                      key={i}
+                      className="
+                        px-3 py-1 text-xs rounded-full
+                        border border-jvcOrange
+                        w-fit
+                      "
+                    >
+                      {(() => {
+                        const [title, ...rest] = g.split(":");
+                        const description = rest.join(":");
+
+                        return (
+                          <>
+                            <span className="font-semibold text-jvcOrange">
+                              {title.trim()}
+                            </span>
+                            {description && (
+                              <span className="text-black">
+                                {" – "}{description.trim()}
+                              </span>
+                            )}
+                          </>
+                        );
+                      })()}
+                    </span>
+
                     ))}
                   </div>
                 </section>
               )}
 
+
               {product.meshSizes?.length > 0 && (
                 <section className="border rounded-xl p-4">
-                  <div className="flex items-center gap-2 mb-2">
+                  <div className="flex items-center gap-2 mb-3">
                     <FiGrid className="text-jvcOrange" />
                     <h3 className="text-sm font-semibold text-jvcNavy">
                       Mesh Size
                     </h3>
                   </div>
-                  <ul className="grid grid-cols-2 gap-2 text-sm text-gray-700">
-                    {product.meshSizes.map((m, i) => (
-                      <li key={i}>• {m}</li>
-                    ))}
-                  </ul>
+
+                  <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                    {product.meshSizes.map((m, i) => {
+                      const isCustom = m.toLowerCase().includes("custom");
+
+                      return (
+                        <span
+                          key={i}
+                          className={`
+                            px-3 py-1.5 text-xs rounded-full text-center
+                            ${isCustom
+                              ? "sm:col-span-3 bg-gray-100 text-gray-600 border border-dashed border-gray-300"
+                              : "bg-white text-gray-800 border border-jvcOrange"}
+                          `}
+                        >
+                          {m}
+                        </span>
+                      );
+                    })}
+                  </div>
                 </section>
               )}
+
 
               {product.packaging?.length > 0 && (
                 <section className="border rounded-xl p-4">
@@ -285,6 +416,61 @@ const ProductModal = ({ product, isOpen, onClose }) => {
         productName={product.name}
         specSheetUrl={pendingSpecSheet}
       />
+      {isZoomOpen && (
+        <div
+          className="fixed inset-0 z-[10000] bg-black/80 flex items-center justify-center"
+          onClick={() => setIsZoomOpen(false)}
+        >
+          {/* LEFT ARROW */}
+          {images.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                showPrevImage();
+              }}
+              className="
+                absolute left-6 top-1/2 -translate-y-1/2
+                w-12 h-12 rounded-full
+                bg-white/80 hover:bg-white
+                shadow flex items-center justify-center
+                text-2xl
+              "
+              aria-label="Previous image"
+            >
+              ‹
+            </button>
+          )}
+
+          {/* ZOOMED IMAGE */}
+          <img
+            src={images[activeImage]}
+            alt={product.name}
+            onClick={(e) => e.stopPropagation()}
+            className="max-h-[90vh] max-w-[90vw] object-contain cursor-zoom-out"
+          />
+
+          {/* RIGHT ARROW */}
+          {images.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                showNextImage();
+              }}
+              className="
+                absolute right-6 top-1/2 -translate-y-1/2
+                w-12 h-12 rounded-full
+                bg-white/80 hover:bg-white
+                shadow flex items-center justify-center
+                text-2xl
+              "
+              aria-label="Next image"
+            >
+              ›
+            </button>
+          )}
+        </div>
+      )}
+
     </>
   );
 };

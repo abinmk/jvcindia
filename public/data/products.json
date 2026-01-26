@@ -1,154 +1,656 @@
 [
   {
-    "id": "Baryte",
-    "slug": "baryte",
-    "name": "Baryte",
+    "id": "Baryte-Powder",
+    "slug": "baryte-powder",
+    "name": "Baryte-Powder",
     "subtitle": "Oil Drilling & Industrial Applications",
-    "type": "Natural Minerals", 
+    "type": "Natural Mineral", 
     "description": "Baryte is a naturally occurring mineral composed of barium sulfate (BaSO₄), known for its high specific gravity, chemical inertness, and whiteness. It is widely used as a weighting agent in oil & gas drilling fluids and in paints, plastics, rubber, and filler applications.",
     "applications": [
-      "Oil & Gas Drilling Fluids",
-      "Paints & Coatings",
-      "Plastics & Rubber",
-      "Industrial Fillers",
-      "Oil & Gas Drilling Fluids",
-      "Paints & Coatings",
-      "Plastics & Rubber",
-      "Industrial Fillers"
+      "Oil and Gas Industry: Drilling Operations: It serves as a crucial weighting agent in drilling fluids, helping to control well pressures and prevent blowouts.",
+      "Fracturing: It enhances the density of fluids used in hydraulic fracturing, aiding in the efficient extraction of oil and gas from wells.",
+      "Concrete: Barite powder improves the density and durability of concrete, making it more resistant to radiation and chemicals.",
+      "Coatings: It is used as a filler in paints and coatings to enhance smoothness, corrosion resistance, and overall performance.",
+      "Medical Diagnostic Imaging: Barite is employed in diagnostic tests like X-rays to improve the clarity of medical imaging.",
+      "Pharmaceuticals: It plays a role in producing barium compounds used in medical treatments and diagnostic procedures.",
+      "Rubber and Plastics: Barite powder acts as a filler in rubber and plastic products, enhancing density, hardness, and chemical resistance.",
+      "Textiles: It improves the weight and opacity of textiles and paper products.",
+      "Automotive Friction Materials: Used in brake pads for their high density and heat resistance.",
+      "Soundproofing: Added to automotive materials to reduce vibration and noise levels.",
+      "Electronics: Barite powder is used in high-density capacitors and for radiation shielding in electronic devices.",
+      "Glass Production: It adds weight and clarity to glass products such as CRT screens and optical lenses."
     ],
     "grades": [
-      "Drilling Grade – High density, low silica",
-      "Industrial Grade – Paints, plastics, rubber"
+      "API Drilling Grade : Specific gravity ≥ 4.1, low silica, oilfield compliant",
+      "Industrial Grade : High whiteness and controlled particle size",
+      "Chemical Grade : Low impurity levels for specialty uses"
     ],
     "meshSizes": [
-      "100",
-      "100",
-      "100",
-      "100",
-      "100",
-      "100",
-      "Custom mesh sizes available on request"
+      "40 Mesh",
+      "Custom sizes on request"
     ],
     "packaging": [
-      "50 Kg Plain / Custom Bags",
-      "1 Ton Jumbo Bags",
-      "20 ft / 40 ft Containers"
+      "25 KG HDPE plain/custom printed laminated bags",
+      "50 KG HDPE plain/custom printed laminated bags",
+      "1/1.5 MT Jumbo Bags",
+      "Bulk supply for drilling and cement plants"
     ],
-    "image": "/images/products/baryte/baryte.webp",
+    "image": "/images/products/baryte-powder/baryte-powder_image_1.webp",
     "images": [
-      "/images/products/baryte/baryte.webp",
-      "/images/products/baryte/baryte-1.webp",
-      "/images/products/baryte/baryte.webp"
+      "/images/products/baryte-powder/baryte-powder_image_1.webp",
+      "/images/products/baryte-powder/baryte-powder_image_2.webp"
     ],
     "specSheet": "/specs/baryte.pdf"
   },
 
   {
-    "id": "Baryte-Stone",
-    "slug": "baryteStone",
-    "name": "Baryte Stone",
-    "subtitle": "Oil Drilling & Industrial Applications",
-    "type": "Ores", 
-    "description": "Baryte Stone is a naturally occurring mineral composed of barium sulfate (BaSO₄), known for its high specific gravity, chemical inertness, and whiteness. It is widely used as a weighting agent in oil & gas drilling fluids and in paints, plastics, rubber, and filler applications.",
+    "id": "baryte-lumps",
+    "slug": "baryte-lumps",
+    "name": "Baryte Lumps",
+    "subtitle": "Raw Mineral for Processing",
+    "type": "Natural Mineral",
+    "description": "Baryte Lumps are naturally mined barium sulfate rocks used as raw material for grinding into baryte powder or for direct industrial applications requiring high density.",
     "applications": [
-      "Oil & Gas Drilling Fluids",
-      "Paints & Coatings",
-      "Plastics & Rubber",
-      "Industrial Fillers",
-      "Oil & Gas Drilling Fluids",
-      "Paints & Coatings",
-      "Plastics & Rubber",
-      "Industrial Fillers"
+      "Grinding & Milling",
+      "Oil & Gas Industry",
+      "Radiation Shielding",
+      "Heavy Aggregate Applications"
     ],
     "grades": [
-      "Drilling Grade – High density, low silica",
-      "Industrial Grade – Paints, plastics, rubber"
+      "Drilling Grade Lumps",
+      "Industrial Grade Lumps"
     ],
     "meshSizes": [
-      "100",
-      "100",
-      "100",
-      "100",
-      "100",
-      "100",
-      "Custom mesh sizes available on request"
+      "Lumps 25–100 mm",
+      "Custom sizing on request"
     ],
     "packaging": [
-      "50 Kg Plain / Custom Bags",
-      "1 Ton Jumbo Bags",
-      "20 ft / 40 ft Containers"
+      "Loose Bulk",
+      "Jumbo Bags"
     ],
-    "image": "/images/products/baryte/baryte-1.webp",
+    "image": "/images/products/baryte-lumps/baryte-lumps_image_1.webp",
     "images": [
-      "/images/products/baryte/baryte.webp",
-      "/images/products/baryte/baryte-1.webp",
-      "/images/products/baryte/baryte.webp"
+      "/images/products/baryte-lumps/baryte-lumps_image_1.webp",
+      "/images/products/baryte-lumps/baryte-lumps_image_2.webp"
     ],
-    "specSheet": "/specs/baryte.pdf"
+    "specSheet": "baryte_lumps.pdf"
   },
 
   {
-    "id": "calcium-carbonate",
-    "slug": "calcium-carbonate",
-    "name": "Calcium Carbonate",
-    "subtitle": "Industrial & Construction Grade",
-    "type": "Natural Minerals",
-    "description": "Calcium Carbonate is a versatile industrial mineral widely used in construction, plastics, paper, paints, and rubber industries. It offers high purity, excellent whiteness, and controlled particle size for consistent industrial performance.",
+  "id": "sodium-bentonite",
+  "slug": "sodium-bentonite",
+  "name": "Sodium Bentonite",
+  "subtitle": "High Swelling Clay",
+  "type": "Cosmetic Clay",
+  "description": "Sodium Bentonite is a swelling clay with excellent viscosity and binding properties, widely used in drilling, construction, and sealing applications.",
+  "applications": [
+    "Drilling Fluids",
+    "Pile Foundation",
+    "Waterproofing",
+    "Foundry Casting"
+  ],
+  "grades": [
+    "API Grade",
+    "Industrial Grade"
+  ],
+  "meshSizes": [
+    "200 Mesh",
+    "325 Mesh",
+    "Custom mesh on request"
+  ],
+  "packaging": [
+    "25 KG Bags",
+    "1 MT Jumbo Bags"
+  ],
+  "image": "/images/products/sodium-bentonite/sodium-bentonite_image_1.webp",
+  "images": [
+    "/images/products/sodium-bentonite/sodium-bentonite_image_1.webp",
+    "/images/products/sodium-bentonite/sodium-bentonite_image_2.webp"
+  ],
+  "specSheet": "sodium_bentonite.pdf"
+},
+
+  {
+  "id": "calcium-bentonite",
+  "slug": "calcium-bentonite",
+  "name": "Calcium Bentonite",
+  "subtitle": "Absorbent Industrial Clay",
+  "type": "Cosmetic Clay",
+  "description": "Calcium Bentonite is a naturally absorbent clay used in purification, filtration, and industrial absorbent applications.",
+  "applications": [
+    "Oil Absorbents",
+    "Cat Litter",
+    "Purification Processes",
+    "Industrial Filtration"
+  ],
+  "grades": [
+    "Industrial Grade",
+    "Absorbent Grade"
+  ],
+  "meshSizes": [
+    "100 Mesh",
+    "200 Mesh",
+    "Granules"
+  ],
+  "packaging": [
+    "25 KG Bags",
+    "1 MT Jumbo Bags"
+  ],
+  "image": "/images/products/calcium-bentonite/calcium-bentonite_image_1.webp",
+  "images": [
+    "/images/products/calcium-bentonite/calcium-bentonite_image_1.webp",
+    "/images/products/calcium-bentonite/calcium-bentonite_image_2.webp"
+  ],
+  "specSheet": "calcium_bentonite.pdf"
+  },
+
+  {
+    "id": "attapulgite",
+    "slug": "attapulgite",
+    "name": "Attapulgite",
+    "subtitle": "Absorbent & Rheology Control Clay",
+    "type": "Cosmetic Clay",
+    "description": "Attapulgite is a magnesium aluminium phyllosilicate clay known for its high absorbency, gel-forming ability, and rheological control properties. It is widely used in industrial, pharmaceutical, and cosmetic applications.",
     "applications": [
-      "Construction Materials",
-      "Plastics & Polymers",
-      "Paper Industry",
-      "Paints & Rubber"
+      "Drilling Fluids: Controls viscosity and suspension",
+      "Industrial Absorbents: Oil and chemical spill absorption",
+      "Cosmetics: Thickening and stabilizing agent",
+      "Paints & Coatings: Anti-settling additive"
     ],
-    "grades": [],
+    "grades": [
+      "Industrial Grade – High absorbency",
+      "Cosmetic Grade – Purified clay"
+    ],
     "meshSizes": [
-      "Granules",
-      "Powder",
+      "200 Mesh",
+      "325 Mesh",
       "Custom mesh on request"
     ],
     "packaging": [
-      "50 Kg Plain / Custom Bags",
-      "1 Ton Jumbo Bags",
-      "20 ft / 40 ft Containers"
+      "25 KG Bags",
+      "1 MT Jumbo Bags"
     ],
-    "image": "/images/products/calcium-carbonate.webp",
+    "image": "/images/products/attapulgite/attapulgite_image_1.webp",
     "images": [
-      "/images/products/calcium-carbonate.webp"
+      "/images/products/attapulgite/attapulgite_image_1.webp",
+      "/images/products/attapulgite/attapulgite_image_2.webp"
     ],
-    "specSheet": "/specs/calcium-carbonate.pdf"
+    "specSheet": "attapulgite.pdf"
   },
 
   {
-    "id": "phospho-gypsum",
-    "slug": "phospho-gypsum",
-    "name": "Phospho Gypsum",
-    "subtitle": "Cement & Agriculture Applications",
-    "type": "Natural Minerals",
-    "description": "Phospho Gypsum is a by-product of phosphoric acid manufacturing, primarily composed of calcium sulfate dihydrate (CaSO₄·2H₂O). It is widely used in cement production, agriculture, and construction materials.",
+    "id": "feldspar",
+    "slug": "feldspar",
+    "name": "Feldspar",
+    "subtitle": "Ceramic & Glass Industry Mineral",
+    "type": "Natural Mineral",
+    "description": "Feldspar is an aluminosilicate mineral used as a flux in glass and ceramic manufacturing. It lowers melting temperature and improves strength, hardness, and durability of finished products.",
     "applications": [
-      "Cement Industry",
+      "Ceramics: Fluxing agent",
+      "Glass Manufacturing: Improves strength and clarity",
+      "Glazes & Enamels",
+      "Fillers in Paints and Plastics"
+    ],
+    "grades": [
+      "Potash Feldspar",
+      "Soda Feldspar"
+    ],
+    "meshSizes": [
+      "100 Mesh",
+      "200 Mesh",
+      "325 Mesh"
+    ],
+    "packaging": [
+      "50 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/feldspar/feldspar_image_1.webp",
+    "images": [
+      "/images/products/feldspar/feldspar_image_1.webp",
+      "/images/products/feldspar/feldspar_image_2.webp"
+    ],
+    "specSheet": "feldspar.pdf"
+  },
+
+  {
+    "id": "dolomite",
+    "slug": "dolomite",
+    "name": "Dolomite",
+    "subtitle": "Construction & Industrial Mineral",
+    "type": "Construction Materials",
+    "description": "Dolomite is a calcium magnesium carbonate mineral widely used in construction, steel manufacturing, agriculture, and glass industries.",
+    "applications": [
+      "Construction: Aggregate and filler",
+      "Steel Industry: Flux material",
+      "Glass Manufacturing",
+      "Agriculture: Soil conditioner"
+    ],
+    "grades": [
+      "Industrial Grade",
+      "Construction Grade"
+    ],
+    "meshSizes": [
+      "100 Mesh",
+      "200 Mesh",
+      "Granules"
+    ],
+    "packaging": [
+      "50 KG Bags",
+      "1 MT Jumbo Bags",
+      "Bulk Supply"
+    ],
+    "image": "/images/products/dolomite/dolomite_image_1.webp",
+    "images": [
+      "/images/products/dolomite/dolomite_image_1.webp",
+      "/images/products/dolomite/dolomite_image_2.webp"
+    ],
+    "specSheet": "dolomite.pdf"
+  },
+
+  {
+    "id": "gypsum",
+    "slug": "gypsum",
+    "name": "Gypsum",
+    "subtitle": "Cement & Construction Mineral",
+    "type": "Construction Materials",
+    "description": "Gypsum is a naturally occurring calcium sulfate mineral used extensively in cement production, construction materials, and agriculture.",
+    "applications": [
+      "Cement Industry: Setting time regulator",
+      "Plaster & Boards",
       "Soil Conditioning",
-      "Road Construction",
-      "Agriculture"
+      "Industrial Fillers"
     ],
     "grades": [
       "Cement Grade",
       "Agricultural Grade"
     ],
     "meshSizes": [
-      "Standard sizes available on request"
+      "100 Mesh",
+      "200 Mesh",
+      "Custom sizes on request"
     ],
     "packaging": [
-      "50 Kg Plain / Custom Bags",
-      "1 Ton Jumbo Bags",
-      "20 ft / 40 ft Containers",
-      "Custom Bulk Packaging"
+      "50 KG Bags",
+      "1 MT Jumbo Bags"
     ],
-    "image": "/images/products/phospho-gypsum.webp",
+    "image": "/images/products/gypsum/gypsum_image_1.webp",
     "images": [
-      "/images/products/phospho-gypsum.webp"
+      "/images/products/gypsum/gypsum_image_1.webp",
+      "/images/products/gypsum/gypsum_image_2.webp"
     ],
-    "specSheet": "/specs/phospho-gypsum.pdf"
+    "specSheet": "gypsum.pdf"
+  },
+
+  {
+    "id": "kaolin-china-clay",
+    "slug": "kaolin-china-clay",
+    "name": "Kaolin (China Clay)",
+    "subtitle": "Ceramic, Paper & Cosmetic Applications",
+    "type": "Cosmetic Clay",
+    "description": "Kaolin, also known as China Clay, is a soft white clay used in ceramics, paper coating, cosmetics, and rubber industries due to its fine particle size and chemical inertness.",
+    "applications": [
+      "Ceramics & Porcelain",
+      "Paper Coating",
+      "Cosmetics & Skincare",
+      "Rubber & Plastics"
+    ],
+    "grades": [
+      "Washed Grade",
+      "Calcined Grade"
+    ],
+    "meshSizes": [
+      "200 Mesh",
+      "325 Mesh"
+    ],
+    "packaging": [
+      "25 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/kaolin-china-clay/kaolin-china-clay_image_1.webp",
+    "images": [
+      "/images/products/kaolin-china-clay/kaolin-china-clay_image_1.webp",
+      "/images/products/kaolin-china-clay/kaolin-china-clay_image_2.webp"
+    ],
+    "specSheet": "kaolin.pdf"
+  },
+
+  {
+    "id": "metakaolin",
+    "slug": "metakaolin",
+    "name": "Metakaolin",
+    "subtitle": "High Reactivity Pozzolanic Material",
+    "type": "Concrete Additives",
+    "description": "Metakaolin is a highly reactive pozzolanic material produced by calcining kaolin clay. It improves concrete strength, durability, and chemical resistance.",
+    "applications": [
+      "High-Performance Concrete",
+      "Precast Elements",
+      "Infrastructure Projects",
+      "Repair Mortars"
+    ],
+    "grades": [
+      "High Reactivity Grade"
+    ],
+    "meshSizes": [
+      "Ultra Fine (<5 micron)"
+    ],
+    "packaging": [
+      "25 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/metakaolin/metakaolin_image_1.webp",
+    "images": [
+      "/images/products/metakaolin/metakaolin_image_1.webp",
+      "/images/products/metakaolin/metakaolin_image_2.webp"
+    ],
+    "specSheet": "metakaolin.pdf"
+  },
+
+  {
+    "id": "talc-lumps",
+    "slug": "talc-lumps",
+    "name": "Talc Lumps",
+    "subtitle": "Raw Material for Milling",
+    "type": "Natural Mineral",
+    "description": "Talc Lumps are naturally mined magnesium silicate rocks used as raw material for producing talc powder for industrial applications.",
+    "applications": [
+      "Milling & Grinding",
+      "Ceramics",
+      "Industrial Fillers"
+    ],
+    "grades": [
+      "Industrial Grade"
+    ],
+    "meshSizes": [
+      "Lumps 20–100 mm"
+    ],
+    "packaging": [
+      "Loose Bulk",
+      "Jumbo Bags"
+    ],
+    "image": "/images/products/talc-lumps/talc-lumps_image_1.webp",
+    "images": [
+      "/images/products/talc-lumps/talc-lumps_image_1.webp",
+      "/images/products/talc-lumps/talc-lumps_image_2.webp"
+    ],
+    "specSheet": "talc_lumps.pdf"
+  },
+
+  {
+    "id": "talc-powder",
+    "slug": "talc-powder",
+    "name": "Talc Powder",
+    "subtitle": "Industrial & Cosmetic Grade",
+    "type": "Cosmetic Clay",
+    "description": "Talc Powder is a finely ground mineral known for its softness, lubricity, and moisture absorption properties.",
+    "applications": [
+      "Cosmetics & Personal Care",
+      "Plastics & Polymers",
+      "Paints & Coatings",
+      "Paper Industry"
+    ],
+    "grades": [
+      "Industrial Grade",
+      "Cosmetic Grade"
+    ],
+    "meshSizes": [
+      "200 Mesh",
+      "325 Mesh"
+    ],
+    "packaging": [
+      "25 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/talc-powder/talc-powder_image_1.webp",
+    "images": [
+      "/images/products/talc-powder/talc-powder_image_1.webp",
+      "/images/products/talc-powder/talc-powder_image_2.webp"
+    ],
+    "specSheet": "talc_powder.pdf"
+  },
+
+  {
+    "id": "ggbs",
+    "slug": "ggbs",
+    "name": "GGBS",
+    "subtitle": "Ground Granulated Blast Furnace Slag",
+    "type": "Concrete Additives",
+    "description": "GGBS is a by-product of iron manufacturing used as a supplementary cementitious material to enhance concrete durability and reduce heat of hydration.",
+    "applications": [
+      "Ready Mix Concrete",
+      "Marine Structures",
+      "Mass Concrete"
+    ],
+    "grades": [
+      "IS 12089 Compliant"
+    ],
+    "meshSizes": [
+      "Ultra Fine"
+    ],
+    "packaging": [
+      "50 KG Bags",
+      "Bulk Supply"
+    ],
+    "image": "/images/products/ggbs/ggbs_image_1.webp",
+    "images": [
+      "/images/products/ggbs/ggbs_image_1.webp",
+      "/images/products/ggbs/ggbs_image_2.webp"
+    ],
+    "specSheet": "ggbs.pdf"
+  },
+
+  {
+    "id": "ggfs",
+    "slug": "ggfs",
+    "name": "GGFS",
+    "subtitle": "Granulated Ground Furnace Slag",
+    "type": "Concrete Additives",
+    "description": "GGFS is granulated slag material used in cement blending and concrete production to improve strength and sustainability.",
+    "applications": [
+      "Cement Manufacturing",
+      "Concrete Blending"
+    ],
+    "grades": [
+      "Cement Grade"
+    ],
+    "meshSizes": [
+      "Fine Ground"
+    ],
+    "packaging": [
+      "Bulk Supply"
+    ],
+    "image": "/images/products/ggfs/ggfs_image_1.webp",
+    "images": [
+      "/images/products/ggfs/ggfs_image_1.webp",
+      "/images/products/ggfs/ggfs_image_2.webp"
+    ],
+    "specSheet": "ggfs.pdf"
+  },
+
+  {
+    "id": "gcc",
+    "slug": "gcc",
+    "name": "GCC",
+    "subtitle": "Ground Calcium Carbonate",
+    "type": "Processed Natural Mineral",
+    "description": "GCC is produced by grinding natural limestone and is widely used as a filler in plastics, paper, paints, and rubber industries.",
+    "applications": [
+      "Plastics",
+      "Paper",
+      "Paints & Coatings",
+      "Rubber"
+    ],
+    "grades": [
+      "Industrial Grade"
+    ],
+    "meshSizes": [
+      "200 Mesh",
+      "325 Mesh"
+    ],
+    "packaging": [
+      "25 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/gcc/gcc_image_1.webp",
+    "images": [
+      "/images/products/gcc/gcc_image_1.webp",
+      "/images/products/gcc/gcc_image_2.webp"
+    ],
+    "specSheet": "gcc.pdf"
+  },
+
+  {
+    "id": "pcc",
+    "slug": "pcc",
+    "name": "PCC",
+    "subtitle": "Precipitated Calcium Carbonate",
+    "type": "Processed Natural Mineral",
+    "description": "PCC is synthetically produced calcium carbonate offering controlled particle size and high brightness for specialty applications.",
+    "applications": [
+      "Paper Industry",
+      "Plastics",
+      "Pharmaceuticals",
+      "Paints"
+    ],
+    "grades": [
+      "Coated Grade",
+      "Uncoated Grade"
+    ],
+    "meshSizes": [
+      "Ultra Fine"
+    ],
+    "packaging": [
+      "25 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/pcc/pcc_image_1.webp",
+    "images": [
+      "/images/products/pcc/pcc_image_1.webp",
+      "/images/products/pcc/pcc_image_2.webp"
+    ],
+    "specSheet": "pcc.pdf"
+  },
+
+  {
+    "id": "copper-slag-grey",
+    "slug": "copper-slag-grey",
+    "name": "Copper Slag (Grey)",
+    "subtitle": "Abrasive & Construction Material",
+    "type": "Construction Materials",
+    "description": "Grey Copper Slag is a by-product of copper smelting used as an abrasive material and construction aggregate.",
+    "applications": [
+      "Abrasive Blasting",
+      "Concrete Aggregate",
+      "Road Construction"
+    ],
+    "grades": [
+      "Abrasive Grade",
+      "Construction Grade"
+    ],
+    "meshSizes": [
+      "0.5–2 mm",
+      "2–5 mm"
+    ],
+    "packaging": [
+      "1 MT Jumbo Bags",
+      "Bulk Supply"
+    ],
+    "image": "/images/products/copper-slag-grey/copper-slag-grey_image_1.webp",
+    "images": [
+      "/images/products/copper-slag-grey/copper-slag-grey_image_1.webp",
+      "/images/products/copper-slag-grey/copper-slag-grey_image_2.webp"
+    ],
+    "specSheet": "copper_slag.pdf"
+  },
+
+  {
+    "id": "quartz-lumps",
+    "slug": "quartz-lumps",
+    "name": "Quartz Lumps",
+    "subtitle": "High Purity Silica Source",
+    "type": "Natural Mineral",
+    "description": "Quartz Lumps are naturally mined high-purity silica rocks used as raw material for processing into sand, grit, and powder.",
+    "applications": [
+      "Silica Processing",
+      "Glass Industry",
+      "Foundry"
+    ],
+    "grades": [
+      "High Purity Grade"
+    ],
+    "meshSizes": [
+      "Lumps 25–100 mm"
+    ],
+    "packaging": [
+      "Loose Bulk",
+      "Jumbo Bags"
+    ],
+    "image": "/images/products/quartz-lumps/quartz-lumps_image_1.webp",
+    "images": [
+      "/images/products/quartz-lumps/quartz-lumps_image_1.webp",
+      "/images/products/quartz-lumps/quartz-lumps_image_2.webp"
+    ],
+    "specSheet": "quartz_lumps.pdf"
+  },
+
+  {
+    "id": "quartz-grits",
+    "slug": "quartz-grits",
+    "name": "Quartz Grits",
+    "subtitle": "Industrial & Abrasive Applications",
+    "type": "Natural Mineral",
+    "description": "Quartz Grits are crushed and graded silica materials used in abrasives, flooring, and industrial applications.",
+    "applications": [
+      "Abrasive Blasting",
+      "Industrial Flooring",
+      "Foundry Applications"
+    ],
+    "grades": [
+      "Industrial Grade"
+    ],
+    "meshSizes": [
+      "16–30 Mesh",
+      "30–80 Mesh"
+    ],
+    "packaging": [
+      "50 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/quartz-grits/quartz-grits_image_1.webp",
+    "images": [
+      "/images/products/quartz-grits/quartz-grits_image_1.webp",
+      "/images/products/quartz-grits/quartz-grits_image_2.webp"
+    ],
+    "specSheet": "quartz_grits.pdf"
+  },
+
+  {
+    "id": "silica-fume-white",
+    "slug": "silica-fume-white",
+    "name": "Silica Fume (White)",
+    "subtitle": "High Performance Concrete Additive",
+    "type": "Concrete Additives",
+    "description": "White Silica Fume is an ultra-fine pozzolanic material used to enhance concrete strength, durability, and surface finish.",
+    "applications": [
+      "High Strength Concrete",
+      "Precast Elements",
+      "Industrial Flooring"
+    ],
+    "grades": [
+      "High Reactivity Grade"
+    ],
+    "meshSizes": [
+      "Ultra Fine (<1 micron)"
+    ],
+    "packaging": [
+      "25 KG Bags",
+      "1 MT Jumbo Bags"
+    ],
+    "image": "/images/products/silica-fume-white/silica-fume-white_image_1.webp",
+    "images": [
+      "/images/products/silica-fume-white/silica-fume-white_image_1.webp",
+      "/images/products/silica-fume-white/silica-fume-white_image_2.webp"
+    ],
+    "specSheet": "silica_fume_white.pdf"
   },
 
   {
@@ -156,16 +658,20 @@
     "slug": "quartz-silica-sand",
     "name": "Quartz Silica Sand",
     "subtitle": "Glass, Foundry & High-Tech Industries",
-    "type": "Natural Minerals",
+    "type": "Natural Mineral",
     "description": "Quartz Silica Sand is a high-purity silica derived from naturally occurring quartz stone. It is a key raw material for glass, foundry, construction, and high-tech industries such as semiconductors and photovoltaics.",
     "applications": [
-      "Glass Manufacturing",
+      "Glass Manufacturing: glass ind",
       "Foundry Casting",
       "Construction",
       "Water Filtration",
       "Semiconductors & Solar"
     ],
     "grades": [
+      "Grade A – SiO₂ > 99.5%",
+      "Grade B – SiO₂ > 98.0%",
+      "Grade A – SiO₂ > 99.5%",
+      "Grade B – SiO₂ > 98.0%",
       "Grade A – SiO₂ > 99.5%",
       "Grade B – SiO₂ > 98.0%",
       "Grade C – SiO₂ > 95.0%"
@@ -182,105 +688,12 @@
       "1 Ton Jumbo Bags",
       "20 ft / 40 ft Containers"
     ],
-    "image": "/images/products/quartz.webp",
+    "image": "/images/products/quartz-silica-sand/quartz-silica-sand_image_1.webp",
     "images": [
-      "/images/products/quartz.webp"
+      "/images/products/quartz-silica-sand/quartz-silica-sand_image_1.webp",
+      "/images/products/quartz-silica-sand/quartz-silica-sand_image_2.webp"
     ],
     "specSheet": "/specs/quartz-silica-sand.pdf"
-  },
-
-  {
-    "id": "silica-fume",
-    "slug": "silica-fume",
-    "name": "Silica Fume (Microsilica)",
-    "subtitle": "High-Performance Concrete Additive",
-    "type": "Concrete Ad-Mixture",
-    "description": "Silica Fume is an ultra-fine pozzolanic material obtained as a by-product of silicon alloy production. With particle size less than 1 micron, it significantly enhances concrete strength, durability, and chemical resistance.",
-    "applications": [
-      "High-Strength Concrete",
-      "Cement Admixtures",
-      "Industrial Flooring",
-      "Infrastructure Projects"
-    ],
-    "grades": [
-      "High Reactivity Grade"
-    ],
-    "meshSizes": [
-      "Ultra-fine (<1 micron)"
-    ],
-    "packaging": [
-      "50 Kg Plain / Custom Bags",
-      "1 Ton Jumbo Bags",
-      "20 ft / 40 ft Containers"
-    ],
-    "image": "/images/products/silica-fume.webp",
-    "images": [
-      "/images/products/silica-fume.webp"
-    ],
-    "specSheet": "/specs/silica-fume.pdf"
-  },
-
-  {
-    "id": "fly-ash",
-    "slug": "fly-ash",
-    "name": "Fly Ash",
-    "subtitle": "Pozzolanic Cement Material",
-    "type": "Processed Minerals",
-    "description": "Fly Ash is a fine powdery by-product from coal combustion in thermal power plants. Rich in silica and alumina, it improves concrete strength, workability, and durability while reducing environmental impact.",
-    "applications": [
-      "Ready-Mix Concrete",
-      "Precast Concrete",
-      "Infrastructure Projects"
-    ],
-    "grades": [
-      "Class F",
-      "Class C"
-    ],
-    "meshSizes": [
-      "100 Mesh"
-    ],
-    "packaging": [
-      "50 Kg Plain / Custom Bags",
-      "1 Ton Jumbo Bags",
-      "20 ft / 40 ft Containers"
-    ],
-    "image": "/images/products/fly-ash.webp",
-    "images": [
-      "/images/products/fly-ash.webp"
-    ],
-    "specSheet": "/specs/fly-ash.pdf"
-  },
-
-  {
-    "id": "bentonite",
-    "slug": "bentonite",
-    "name": "Bentonite",
-    "subtitle": "Drilling & Industrial Clay",
-    "type": "Natural Minerals",
-    "description": "Bentonite is a natural clay rich in montmorillonite, known for its excellent swelling, binding, and absorbent properties. It is widely used in drilling, foundry casting, construction, and waterproofing applications.",
-    "applications": [
-      "Drilling Fluids",
-      "Foundry Casting",
-      "Construction",
-      "Waterproofing"
-    ],
-    "grades": [
-      "Sodium Bentonite – High swelling grade",
-      "Calcium Bentonite – Absorbent grade"
-    ],
-    "meshSizes": [
-      "Custom mesh sizes available on request"
-    ],
-    "packaging": [
-      "50 Kg Plain / Custom Bags",
-      "1 Ton Jumbo Bags",
-      "20 ft / 40 ft Containers"
-    ],
-    "image": "/images/products/bentonite.webp",
-    "images": [
-      "/images/products/bentonite.webp"
-    ],
-    "specSheet": "/specs/bentonite.pdf"
   },
 
   {
@@ -288,7 +701,7 @@
     "slug": "sample-product-1",
     "name": "Sample-Product-01",
     "subtitle": "Basic Application",
-    "type": "Natural Minerals"
+    "type": "Natural Mineral"
   },
 
     {
@@ -296,7 +709,7 @@
     "slug": "sample-product-2",
     "name": "Sample-Product-02",
     "subtitle": "Basic Application",
-    "type": "Natural Minerals"
+    "type": "Natural Mineral"
   },
 
   {
@@ -304,7 +717,7 @@
     "slug": "sample-product-3",
     "name": "Sample-Product-03",
     "subtitle": "Basic Application",
-    "type": "Natural Minerals"
+    "type": "Natural Mineral"
   },
 
     {
@@ -312,7 +725,7 @@
     "slug": "sample-product-4",
     "name": "Sample-Product-04",
     "subtitle": "Basic Application",
-    "type": "Concrete Ad-Mixture"
+    "type": "Concrete Additives"
   },
 
   {

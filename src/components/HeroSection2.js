@@ -117,11 +117,11 @@ const HeroSection = () => {
             >
               <h1 className="text-4xl sm:text-4xl md:text-5xl font-black text-white">
                 <span className="block">{hero.titleLine1}</span>
-                <span className="block mt-2">
+                <span className="block mt-4">
                   <span className="bg-gradient-to-r from-jvcOrange to-orange-500 bg-clip-text text-transparent">
                     {hero.highlight}
                   </span>{" "}
-                  <span className="block mt-2"></span>
+                  <span className="block mt-4"></span>
                   {hero.titleLine2}
                 </span>
               </h1>
@@ -152,6 +152,7 @@ const HeroSection = () => {
                       relative overflow-hidden
                       group
                       px-8 py-4
+                      border-2 border-white/30
                       bg-gradient-to-r from-jvcOrange to-orange-500
                       text-white font-bold text-lg
                       rounded-2xl
@@ -207,6 +208,7 @@ const HeroSection = () => {
                   className="
                     lg:hidden
                     px-8 py-4
+                    border-2 border-white/30
                     bg-gradient-to-r from-jvcOrange to-orange-500
                     text-white font-bold text-lg
                     rounded-2xl
